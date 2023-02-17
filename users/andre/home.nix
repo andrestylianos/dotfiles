@@ -16,6 +16,12 @@
   # changes in each release.
   home.stateVersion = "22.11";
 
+  programs.git = {
+    enable = true;
+    userName = "André Stylianos Ramos";
+    userEmail = "andre.stylianos@protonmail.com";
+  };
+
   programs.gpg = {
     enable = true;
   };
