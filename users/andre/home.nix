@@ -20,7 +20,15 @@
     enable = true;
     userName = "André Stylianos Ramos";
     userEmail = "andre.stylianos@protonmail.com";
-  };
+    extraConfig = {
+      user = {
+        signingkey = "A6DDF756C510CB4E";
+      };
+      commit = {
+        gpgsign = true;
+      };
+    };
+ };
 
   programs.gpg = {
     enable = true;
