@@ -55,6 +55,7 @@
     layout = "us";
     xkbVariant = "alt-intl";
     enable = true;
+    videoDrivers = [ "amdgpu" ];
 
     displayManager.lightdm = {
       enable = true;
