@@ -44,6 +44,8 @@ in {
   home.username = "andre";
   home.homeDirectory = "/home/andre";
 
+  nixpkgs.config.allowUnfree = true;
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
@@ -201,11 +203,16 @@ in {
     nix-prefetch-github
     pinentry-qt
     ripgrep
-    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
 
     coreutils
     gnutls
     clang
+
+    # Work
+    slack
+
+    # Fonts
+    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
   ];
 
 
