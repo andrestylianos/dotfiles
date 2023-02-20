@@ -215,6 +215,7 @@ in {
   home.packages = with pkgs; [
     atool
     bitwarden
+    brave
     exa
     git
     git-crypt
