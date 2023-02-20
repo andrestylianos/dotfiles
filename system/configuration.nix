@@ -63,6 +63,13 @@
     desktopManager.plasma5.enable = true;
   };
 
+  programs.zsh.enable = true;
+
+  services.emacs = {
+    enable = true;
+    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+  };
+
   # Configure console keymap
   # console.keyMap = "us";
   hardware.bluetooth.enable = true;
@@ -83,6 +90,7 @@
     description = "André Ramos";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages
