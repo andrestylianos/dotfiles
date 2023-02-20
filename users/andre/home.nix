@@ -1,6 +1,44 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-{
+let
+  my-doom-emacs = let
+    emacsPkg = with pkgs;
+      (emacsPackagesFor (emacs.override {
+        nativeComp = true;
+        withPgtk = true;
+      })).emacsWithPackages (ps: with ps; [ vterm all-the-icons ]);
+    pathDeps = with pkgs; [
+      #python3
+      aspell
+      binutils
+      ripgrep
+      fd
+      gnutls
+      zstd
+      shfmt
+      shellcheck
+      sqlite
+      editorconfig-core-c
+      gcc
+      jq
+
+      nixfmt
+    ];
+  in emacsPkg // (pkgs.symlinkJoin {
+    name = "my-doom-emacs";
+    paths = [ emacsPkg ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/emacs \
+        --prefix PATH : ${lib.makeBinPath pathDeps} \
+        --set LSP_USE_PLISTS true
+      wrapProgram $out/bin/emacsclient \
+        --prefix PATH : ${lib.makeBinPath pathDeps} \
+        --set LSP_USE_PLISTS true
+    '';
+  });
+
+in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "andre";
@@ -45,11 +83,6 @@
 
   programs.bat = {
     enable = true;
-  };
-
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs;  # replace with pkgs.emacs-gtk, or a version provided by the community overlay if desired.
   };
 
   programs.git = {
@@ -144,7 +177,11 @@
     ];
   };
 
-  services.emacs.enable = true;
+  services.emacs = {
+    enable = true;
+    package = my-doom-emacs;
+    client.enable = true;
+  };
 
   services.gpg-agent = {
     enable = true;
@@ -160,14 +197,17 @@
     fd
     fzf
     killall
+    my-doom-emacs
     nix-prefetch-github
     pinentry-qt
     ripgrep
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
 
-    binutils
+    coreutils
     gnutls
+    clang
   ];
+
 
   xdg = {
     enable = true;
@@ -209,6 +249,27 @@
       };
 
       "gtk-4.0/settings.ini".source = ../../config/gtk-4.0/settings.ini;
+    };
+
+    desktopEntries = {
+      org-protocol = {
+        name = "org-protocol";
+        exec = "${my-doom-emacs}/bin/emacsclient -c %u";
+        icon = "emacs";
+        type = "Application";
+        terminal = false;
+        categories = [ "System" ];
+        mimeType = [ "x-scheme-handler/org-protocol" ];
+        noDisplay = true;
+      };
+      my-emacs = {
+        name = "My Emacs";
+        exec = "${pkgs.emacs-gtk}/bin/emacs --with-profile default";
+        icon = "emacs";
+        type = "Application";
+        terminal = false;
+        categories = [ "System" ];
+      };
     };
   };
 
