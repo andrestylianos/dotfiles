@@ -165,7 +165,7 @@
     ripgrep
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
 
-binutils
+    binutils
     gnutls
   ];
 
@@ -175,7 +175,7 @@ binutils
       "doom-config/config.el" = {
         source = ../../config/.doom.d/config.el;
       };
-      "doom-config/init.el" = { 
+      "doom-config/init.el" = {
         source = ../../config/.doom.d/init.el;
         onChange = "${pkgs.writeShellScript "doom-init-change" ''
           export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
@@ -183,8 +183,8 @@ binutils
           export PATH=$PATH:$HOME/.nix-profile/bin
           ${config.xdg.configHome}/doom-emacs/bin/doom --force sync
         ''}";
-      };       
-      "doom-config/packages.el" = { 
+      };
+      "doom-config/packages.el" = {
         source = ../../config/.doom.d/packages.el;
         onChange = "${pkgs.writeShellScript "doom-packages-change" ''
           export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
