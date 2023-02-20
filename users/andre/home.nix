@@ -192,6 +192,7 @@ in {
 
   home.packages = with pkgs; [
     atool
+    bitwarden
     exa
     git
     git-crypt
