@@ -86,6 +86,10 @@ in {
         rev = "c2d700b784c793cc82131ef86323801b8d6e67bb";
         sha256 = "/WtacZPr45lurS0hv+W8UGzsXY3RujkU5oGGGqjqG0Q=";
       };
+
+      ".m2/settings.xml".source = ../../config/.m2/settings.xml;
+      ".datomic/dev-local.edn".source = ../../config/.datomic/dev-local.edn;
+      ".clojure/deps.edn".source = ../../config/.clojure/deps.edn;
     };
   };
 
@@ -93,6 +97,11 @@ in {
 
   programs.bat = {
     enable = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   programs.git = {
@@ -130,6 +139,10 @@ in {
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.kitty = {
+    enable = true;
   };
 
   programs.starship = {
@@ -213,7 +226,6 @@ in {
   };
 
   home.packages = with pkgs; [
-    atool
     bitwarden
     brave
     exa
@@ -237,6 +249,12 @@ in {
 
     # Fonts
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+
+    # Compression
+    atool
+    zip
+    unzip
+    #tar
   ];
 
 
