@@ -101,7 +101,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
-    firefox
+    # firefox
     #  wget
   ];
 

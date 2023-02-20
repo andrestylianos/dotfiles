@@ -44,7 +44,15 @@ in {
   home.username = "andre";
   home.homeDirectory = "/home/andre";
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      nur = import (builtins.fetchTarball
+        "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+          inherit pkgs;
+        };
+    };
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -103,6 +111,20 @@ in {
 
   programs.gpg = {
     enable = true;
+  };
+
+  programs.firefox = {
+    enable = true;
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      bitwarden
+      privacy-badger
+      ublock-origin
+    ];
+    profiles.default = {
+      id = 0;
+      name = "Default";
+      isDefault = true;
+    };
   };
 
   programs.fzf = {
