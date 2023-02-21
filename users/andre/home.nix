@@ -103,7 +103,7 @@ in {
     enable = true;
     enableZshIntegration = true;
     nix-direnv.enable = true;
-   #nix-direnv.enableFlakes = true;
+    #nix-direnv.enableFlakes = true;
   };
 
   programs.git = {
@@ -336,17 +336,89 @@ in {
   programs.home-manager.enable = true;
 
   dconf.settings = {
+
+    # Extensions and basic conf
     "org/gnome/shell" = {
       favorite-apps = [
         "firefox.desktop"
+        "brave-browser.desktop"
+        "emacs.desktop:3"
+        "kitty.desktop"
+        "slack.desktop"
         "org.gnome.Nautilus.desktop"
+      ];
+      enabled-extensions = [
+        "appindicatorsupport@rgcjonas.gmail.com"
+        "pop-shell@system76.com"
+        "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
+        "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
       ];
     };
     "org/gnome/desktop/interface" = {
+      clock-show-weekday = true;
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
       scaling-factor = lib.hm.gvariant.mkUint32 2;
       text-scaling-factor = lib.hm.gvariant.mkDouble 0.7;
+    };
+    "org/gnome/mutter" = {
+      attach-modal-dialogs = true;
+      dynamic-workspaces = false;
+      edge-tiling = false;
+      focus-change-on-pointer-rest = true;
+      workspaces-only-on-primary = true;
+    };
+
+    # Workspace Configs
+    "org/gnome/desktop/wm/preferences" = {
+      num-workspaces = 7;
+      workspace-names = [
+        "Personal"
+        "Work"
+        "Code"
+        "Terminal"
+        "Comms"
+        "Music"
+        "Misc"
+      ];
+    };
+
+    # Shortcuts
+    "org/gnome/mutter/keybindings" = {
+      toggle-tiled-left = [];
+      toggle-tiled-right = [];
+    };
+    "org/gnome/mutter/wayland/keybindings" = {
+      restore-shortcuts = [];
+    };
+    "org/gnome/desktop/wm/keybindings" = {
+      begin-move = [];
+      maximize = [];
+      unmaximize = [];
+    };
+    "org/gnome/shell/keybindings" = {
+      toggle-application-view = [];
+    };
+
+    # Extensions
+    ## Pop Shell
+    "org/gnome/shell/extensions/pop-shell" = {
+      active-hint = false;
+      show-title = false;
+      smart-gaps = false;
+      tile-by-default = false;
+
+    };
+
+    "org/gnome/shell/extensions/auto-move-windows" = {
+      application-list = [
+        "firefox.desktop:1"
+        "brave-browser.desktop:2"
+        "emacsclient.desktop:3"
+        "emacs.desktop:3"
+        "kitty.desktop:4"
+        "slack.desktop:5"
+      ];
     };
   };
 }
