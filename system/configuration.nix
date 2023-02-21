@@ -105,6 +105,22 @@
     #  wget
   ];
 
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-wlr
+        xdg-desktop-portal-gtk
+      ];
+      gtkUsePortal = true;
+    };
+  };
+
+  security.pam.services.kwallet = {
+    name = "kwallet";
+    enableKwallet = true;
+  };
+
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
   #sound.enable = false;
 
