@@ -220,6 +220,7 @@ in {
     enable = true;
     package = my-doom-emacs;
     client.enable = true;
+    socketActivation.enable = true;
   };
 
   services.gpg-agent = {
@@ -310,26 +311,6 @@ in {
       "gtk-4.0/settings.ini".source = ../../config/gtk-4.0/settings.ini;
     };
 
-    desktopEntries = {
-      org-protocol = {
-        name = "org-protocol";
-        exec = "${my-doom-emacs}/bin/emacsclient -c %u";
-        icon = "emacs";
-        type = "Application";
-        terminal = false;
-        categories = [ "System" ];
-        mimeType = [ "x-scheme-handler/org-protocol" ];
-        noDisplay = true;
-      };
-      my-emacs = {
-        name = "My Emacs";
-        exec = "${pkgs.emacs-gtk}/bin/emacs --with-profile default";
-        icon = "emacs";
-        type = "Application";
-        terminal = false;
-        categories = [ "System" ];
-      };
-    };
   };
 
   # Let Home Manager install and manage itself.
@@ -342,7 +323,8 @@ in {
       favorite-apps = [
         "firefox.desktop"
         "brave-browser.desktop"
-        "emacs.desktop:3"
+        #"emacs.desktop"
+        "emacsclient.desktop"
         "kitty.desktop"
         "slack.desktop"
         "org.gnome.Nautilus.desktop"
@@ -371,6 +353,7 @@ in {
 
     # Workspace Configs
     "org/gnome/desktop/wm/preferences" = {
+      focus-new-windows = "smart";
       num-workspaces = 7;
       workspace-names = [
         "Personal"
@@ -406,7 +389,7 @@ in {
       active-hint = false;
       show-title = false;
       smart-gaps = false;
-      tile-by-default = false;
+      tile-by-default = true;
 
     };
 
