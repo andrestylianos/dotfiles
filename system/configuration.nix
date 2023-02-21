@@ -144,10 +144,21 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
     };
   };
 
-  security.pam.services.kwallet = {
-    name = "kwallet";
-    enableKwallet = true;
+  security = {
+    pam.services = {
+      login.enableGnomeKeyring = true;
+      sshd.enableGnomeKeyring = true;
+      lightdm.enableGnomeKeyring = true;
+    };
+    polkit = {
+      enable = true;
+    };
   };
+
+  #security.pam.services.kwallet = {
+  #  name = "kwallet";
+  #  enableKwallet = true;
+  #};
 
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
   sound.enable = false;
@@ -163,6 +174,9 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
   };
+
+
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
