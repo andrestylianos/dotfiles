@@ -57,11 +57,38 @@
     enable = true;
     videoDrivers = [ "amdgpu" ];
 
-    displayManager.lightdm = {
-      enable = true;
-    };
-    desktopManager.plasma5.enable = true;
+    # KDE Plasma 5
+    #displayManager.lightdm = {
+    #  enable = true;
+    #};
+    # desktopManager.plasma5.enable = true;
+
+    #GNOME
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
   };
+
+  programs.dconf.enable = true;
+services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+
+  environment.gnome.excludePackages = (with pkgs; [
+  gnome-photos
+  gnome-tour
+]) ++ (with pkgs.gnome; [
+  cheese # webcam tool
+  gnome-music
+  gnome-terminal
+  gedit # text editor
+  epiphany # web browser
+  geary # email reader
+  evince # document viewer
+  gnome-characters
+  totem # video player
+  tali # poker game
+  iagno # go game
+  hitori # sudoku game
+  atomix # puzzle game
+]);
 
   programs.zsh.enable = true;
 
@@ -101,6 +128,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
+    gnome.gnome-tweaks
     # firefox
     #  wget
   ];
@@ -110,9 +138,9 @@
       enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-wlr
-        xdg-desktop-portal-gtk
+      #  xdg-desktop-portal-gtk
       ];
-      gtkUsePortal = true;
+      #gtkUsePortal = true;
     };
   };
 
@@ -122,7 +150,8 @@
   };
 
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
-  #sound.enable = false;
+  sound.enable = false;
+  hardware.pulseaudio.enable = false;
 
   # rtkit is optional but recommended
   security.rtkit.enable = true;

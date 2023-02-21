@@ -230,6 +230,7 @@ in {
   home.packages = with pkgs; [
     bitwarden
     brave
+    cachix
     exa
     git
     git-crypt
@@ -245,6 +246,13 @@ in {
     coreutils
     gnutls
     clang
+
+    # KDE
+    #libsForQt5.bismuth
+
+    # Gnome
+    gnomeExtensions.appindicator
+    gnomeExtensions.pop-shell
 
     # Work
     slack
@@ -326,4 +334,19 @@ in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  dconf.settings = {
+    "org/gnome/shell" = {
+      favorite-apps = [
+        "firefox.desktop"
+        "org.gnome.Nautilus.desktop"
+      ];
+    };
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      enable-hot-corners = false;
+      scaling-factor = lib.hm.gvariant.mkUint32 2;
+      text-scaling-factor = lib.hm.gvariant.mkDouble 0.7;
+    };
+  };
 }
