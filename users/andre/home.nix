@@ -54,6 +54,21 @@ in {
     };
   };
 
+  nixpkgs.overlays = [(
+    self: super: {
+      slack  = super.slack.overrideAttrs (old: {
+        installPhase = old.installPhase + ''
+          rm $out/bin/slack
+
+          makeWrapper $out/lib/slack/slack $out/bin/slack \
+          --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
+          --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
+          --add-flags "--enable-features=WebRTCPipeWireCapturer %U"
+        '';
+      });
+    }
+  )];
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
