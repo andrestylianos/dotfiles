@@ -115,7 +115,7 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   users.users.andre = {
     isNormalUser = true;
     description = "André Ramos";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "podman" ];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
@@ -130,7 +130,11 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
     vim
     gnome.gnome-tweaks
     # firefox
-    #  wget
+    #
+    # Docker
+    arion
+    docker-client
+
   ];
 
   xdg = {
@@ -149,6 +153,10 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
       login.enableGnomeKeyring = true;
       sshd.enableGnomeKeyring = true;
       lightdm.enableGnomeKeyring = true;
+
+      swaylock = {
+        text = "auth include login";
+      };
     };
     polkit = {
       enable = true;
@@ -175,7 +183,17 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
     #jack.enable = true;
   };
 
+  ############
+  # Docker
+  ############
 
+  # Arion works with Docker, but for NixOS-based containers, you need Podman
+  # since NixOS 21.05.
+  virtualisation.docker.enable = false;
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerSocket.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.defaultNetwork.dnsname.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
