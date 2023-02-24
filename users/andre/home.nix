@@ -63,7 +63,7 @@ in {
           makeWrapper $out/lib/slack/slack $out/bin/slack \
           --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
           --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-          --add-flags "--enable-features=WebRTCPipeWireCapturer %U"
+          --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer %U"
         '';
       });
     }
@@ -84,6 +84,7 @@ in {
     sessionVariables = {
       DOOMDIR = "${config.xdg.configHome}/doom-config";
       DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
+      NIXOS_OZONE_WL = "1";
     };
 
     file = { 
@@ -106,6 +107,47 @@ in {
       ".datomic/dev-local.edn".source = ../../config/.datomic/dev-local.edn;
       ".clojure/deps.edn".source = ../../config/.clojure/deps.edn;
     };
+  };
+
+  # Use sway desktop environment with Wayland display server
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    # Sway-specific Configuration
+    config = {
+      modifier = "Mod4";
+      terminal = "kitty";
+      menu = "wofi --show run";
+      # Status bar(s)
+      bars = [{
+        fonts.size = 20.0;
+        # comment below line for default
+        command = "waybar";
+        position = "top";
+      }];
+      assigns = {
+        "1: web" = [{ class = "Firefox"; }];
+        "2: work" = [{ class = "Brave"; }];
+        "3: code" = [{ class = "Emacs"; }];
+        "5: comms" = [{ class = "Slack"; }];
+        "0: extra" = [{ class = "Firefox"; window_role = "About"; }];
+      };
+      gaps = {
+        outer = 10;
+      };
+      # Display device configuration
+      output = {
+        eDP-1 = {
+          # Set HIDP scale (pixel integer scaling)
+          scale = "2";
+        };
+        HDMI-A-1 = {
+          # Set HIDP scale (pixel integer scaling)
+          scale = "2";
+        };
+      };
+    };
+    # End of Sway-specificc Configuration
   };
 
   fonts.fontconfig.enable = true;
@@ -250,12 +292,15 @@ in {
     exa
     git
     git-crypt
+    ghostscript
     gnupg
     fd
+    flameshot
     fzf
     killall
     my-doom-emacs
     nix-prefetch-github
+    pdfarranger
     pinentry-qt
     ripgrep
 
@@ -281,6 +326,17 @@ in {
     zip
     unzip
     #tar
+    #
+
+    # Sway
+    swaylock
+      swayidle
+    waybar
+      wl-clipboard
+      mako
+      wofi
+    grim # screenshot functionality
+    slurp # screenshot functionality
   ];
 
 

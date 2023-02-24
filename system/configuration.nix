@@ -167,6 +167,19 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   #  name = "kwallet";
   #  enableKwallet = true;
   #};
+  #
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport = true;
+  # For 32 bit applications
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages = with pkgs; [
+  amdvlk
+];
+# For 32 bit applications
+# Only available on unstable
+hardware.opengl.extraPackages32 = with pkgs; [
+  driversi686Linux.amdvlk
+];
 
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
   sound.enable = false;
