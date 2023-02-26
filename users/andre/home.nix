@@ -112,8 +112,15 @@ in {
   # Use sway desktop environment with Wayland display server
   wayland.windowManager.sway = {
     enable = true;
+    systemdIntegration = true;
+    xwayland = true;
     wrapperFeatures.gtk = true;
     # Sway-specific Configuration
+    extraConfig = ''
+      for_window [app_id=".blueman-manager-wrapped"] floating enable, sticky enable, resize set width 580 px height 290 px, move position cursor, move left 5, move down 35
+      for_window [app_id="pavucontrol"] floating enable, sticky enable, resize set width 550 px height 600px, move position cursor, move down 35
+      for_window [app_id="gnome-calculator"] floating enable
+    '';
     config = {
       modifier = "Mod4";
       terminal = "kitty";
@@ -135,6 +142,27 @@ in {
       gaps = {
         outer = 10;
       };
+      workspaceAutoBackAndForth = true;
+      startup = [
+
+        # Services
+        #{ command = "systemctl --user restart kanshi.service"; always = true; }
+
+        # Idle configuration
+        {
+          command = ''
+            swayidle \
+              timeout 300 'lock-effects 1' \
+              timeout 330 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+              before-sleep 'lock-effects'
+          '';
+        }
+
+        # Applets
+        { command = "blueman-applet"; }
+
+      ];
       # Display device configuration
       output = {
         eDP-1 = {
@@ -147,7 +175,34 @@ in {
         };
       };
     };
+    extraSessionCommands = ''
+      source /etc/profile
+    '';
+    swaynag = {
+      enable = true;
+    };
     # End of Sway-specificc Configuration
+  };
+  # Bluetooth
+  services.blueman-applet.enable = true;
+
+  services.network-manager-applet.enable = true;
+
+  systemd.user.services.sway = {
+    Unit = {
+      Description = "Sway - Wayland window manager";
+      Documentation = [ "man:sway(5)" ];
+      BindsTo = [ "graphical-session.target" ];
+      Wants = [ "graphical-session-pre.target" ];
+      After = [ "graphical-session-pre.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.sway}/bin/sway";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
   };
 
   fonts.fontconfig.enable = true;
@@ -285,6 +340,12 @@ in {
     pinentryFlavor = "qt";
   };
 
+  services.swayidle = {
+    enable = true;
+  };
+
+  services.gnome-keyring.enable = true;
+
   home.packages = with pkgs; [
     bitwarden
     brave
@@ -330,13 +391,18 @@ in {
 
     # Sway
     swaylock
-      swayidle
+    pavucontrol
+    # swayidle
     waybar
-      wl-clipboard
-      mako
-      wofi
-    grim # screenshot functionality
-    slurp # screenshot functionality
+    wl-clipboard
+    wf-recorder # screen capture
+    wlogout # nice gui shutdown menu
+    mako
+    wofi
+    xdg_utils
+    xwayland # compatibility layer with XOrg for wayland
+    #grim # screenshot functionality
+    #slurp # screenshot functionality
   ];
 
 
