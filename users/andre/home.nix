@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, doom-emacs-src, ... }:
 
 let
   my-doom-emacs = let
@@ -44,15 +44,15 @@ in {
   home.username = "andre";
   home.homeDirectory = "/home/andre";
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      nur = import (builtins.fetchTarball
-        "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-          inherit pkgs;
-        };
-    };
-  };
+  #nixpkgs.config = {
+  #  allowUnfree = true;
+  #  packageOverrides = pkgs: {
+  #    nur = import (builtins.fetchTarball
+  #      "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+  #        inherit pkgs;
+  #      };
+  #  };
+  #};
 
   nixpkgs.overlays = [(
     self: super: {
@@ -431,7 +431,7 @@ in {
         ''}";
       };
       "doom-emacs" = {
-        source = builtins.fetchGit "https://github.com/doomemacs/doomemacs";
+        source = doom-emacs-src;
         onChange = "${pkgs.writeShellScript "doom-change" ''
           export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
           export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"

@@ -1,0 +1,97 @@
+{
+  "nodes": {
+    "doom-emacs-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677376049,
+        "narHash": "sha256-BvXV1EMrTwTc7HcaxWoweT3c/U7/d1iO5TOm/UgZ8ng=",
+        "owner": "doomemacs",
+        "repo": "doomemacs",
+        "rev": "5c563d307b7fe0cc65e8d5c235565e96ccca3b35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "doomemacs",
+        "repo": "doomemacs",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1677284824,
+        "narHash": "sha256-I3gDxmGjyXdtOR5S8sIeCO8pT+5OR69f/g5EVoQUdsY=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "29280978234b73423f4eb708cbb999295f76b42a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-22.11",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1677341534,
+        "narHash": "sha256-zqaJuOTnKzg5AubC4rzzJ/IS5kU5n4U7vxosv1Fv8Ug=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7076110064c09f0b3942f609f2134c1358ef2e50",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-22.11",
+        "type": "indirect"
+      }
+    },
+    "nur": {
+      "locked": {
+        "lastModified": 1677461185,
+        "narHash": "sha256-ZaR0UZoqweLjVWoZfqkpDHmTsi2Dvfo5L6J8RQncxbY=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "46b3c1b656f1161b10aa12b79bbba308606d9ec1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "doom-emacs-src": "doom-emacs-src",
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs",
+        "nur": "nur"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1667395993,
+        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

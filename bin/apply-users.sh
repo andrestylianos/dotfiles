@@ -1,4 +1,5 @@
 #!/bin/sh
 pushd ~/.dotfiles
-home-manager switch -f ./users/andre/home.nix
+nix build .#homeManagerConfigurations.andre.activationPackage
+./result/activate
 popd
