@@ -14,9 +14,15 @@
       flake = false;
     };
 
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows="nixpkgs-unstable";
+    };
+
   };
 
-  outputs = { nixpkgs, home-manager, nur, doom-emacs-src, ... }:
+  outputs = { nixpkgs, home-manager, nur, doom-emacs-src, hyprland, nixpkgs-unstable, ... }:
     let
       system = "x86_64-linux";
 
@@ -38,6 +44,7 @@
           inherit pkgs;
           modules = [
             ./users/andre/home.nix
+            hyprland.homeManagerModules.default
           ];
           extraSpecialArgs = {
             doom-emacs-src = doom-emacs-src;
@@ -50,6 +57,8 @@
 
           modules = [
             ./system/configuration.nix
+
+            hyprland.nixosModules.default
           ];
         };
       };

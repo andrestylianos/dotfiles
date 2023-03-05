@@ -123,7 +123,14 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
+
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -131,12 +138,17 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
     vim
     gnome.gnome-tweaks
     # firefox
-    #
-    # Docker
+    ## Hyprland
+    qt5.qtwayland
+    qt6.qtwayland
+    libsForQt5.polkit-kde-agent
+    ## Docker
     arion
     docker-client
 
   ];
+
+  programs.hyprland.enable = true;
 
   xdg = {
     portal = {
@@ -193,6 +205,7 @@ hardware.opengl.extraPackages32 = with pkgs; [
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
     media-session.config.bluez-monitor.rules = [
     {
       # Matches all cards

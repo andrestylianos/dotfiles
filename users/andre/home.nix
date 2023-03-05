@@ -109,6 +109,10 @@ in {
     };
   };
 
+  imports = [
+    ./hyprland/config.nix
+  ];
+
   # Use sway desktop environment with Wayland display server
   wayland.windowManager.sway = {
     enable = true;
@@ -273,6 +277,8 @@ in {
       # package.disabled = true;
     };
   };
+
+  wayland.windowManager.hyprland.enable = true;
 
   programs.zsh = {
     enable = true;
