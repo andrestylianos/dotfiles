@@ -19,70 +19,6 @@
           :class "day"
           :text {time.day})))
 
-    (centerbox
-      :class "system-row"
-      (box
-        :class "wifi-box"
-        :space-evenly false
-        :orientation "v"
-        (box
-          :class "element icon ${net.class}"
-          :space-evenly false
-          (button
-            :class "wifi-button"
-            :onclick "scripts/net toggle"
-            {net.icon})
-          (label
-            :class "separator"
-            :text "│")
-          (button
-            :class "wifi-arrow-btn"
-            :onclick "eww close system-menu && gnome-control-center &"
-            ""))
-        (label
-          :text {net.essid}
-          :xalign 0.5
-          :limit-width 15))
-
-      (box
-        :class "bluetooth-box"
-        :space-evenly false
-        :orientation "v"
-        (box
-          :class "element icon ${bluetooth.class}"
-          :space-evenly false
-          (button
-            :class "bluetooth-button"
-            :onclick "scripts/bluetooth toggle"
-            {bluetooth.icon})
-          (label
-            :class "separator"
-            :text "│")
-          (button
-            :class "bluetooth-arrow-btn"
-            :onclick "eww close system-menu && blueberry"
-            ""))
-        (label
-          :text {bluetooth.text}
-          :xalign 0.5
-          :tooltip "${bluetooth.text} ${bluetooth.battery}"
-          :limit-width 15))
-
-      (box
-        :class "airplane-box"
-        :space-evenly false
-        :orientation "v"
-        (box
-          :class "element"
-          (button
-            :class "airplane-button"
-            :onclick "scripts/airplane toggle"
-            airplane))
-        (label
-          :text "Airplane Mode"
-          :xalign 0.5
-          :limit-width 16)))
-
     (box
       :class "sliders"
       :orientation "v"
@@ -98,17 +34,7 @@
           :value {volume.percent}
           :tooltip "volume on ${volume.percent}%"
           :onchange "scripts/volume setvol SINK {}"))
-      (box
-        :class "brightness-slider-box"
-        :space-evenly false
-        (button
-          :class "brightness-slider-icon icon"
-          {brightness.icon})
-        (scale
-          :class "brightness-slider" 
-          :value {brightness.percent} 
-          :marks true 
-          :onchange "light -S {}")))
+      )
 
     (box
       :class "system-info-box"
@@ -147,7 +73,7 @@
         :space-evenly false
         :halign "end"
         (circular-progress
-          :value {memory.percent}
+          :value {EWW_RAM.used_mem_perc}
           :class "sys-mem"
           :thickness 3
           (label
@@ -160,28 +86,12 @@
             :halign "start"
             :class "sys-text-mem")
           (label
-            :text "${memory.used} | ${memory.total}"
+            :text "${EWW_RAM.used_mem} | ${EWW_RAM.total_mem}"
             :halign "start"
             :class "sys-text-sub"))))
 
     (centerbox
       :class "bottom-row"
-      (box
-        :class "battery-box"
-        :space-evenly false
-        :halign "start"
-        (label
-          :class "battery-icon icon"
-          :style "color: ${battery.color}"
-          :text {battery.icon})
-        (label
-          :text {EWW_BATTERY["BAT0"].capacity})
-        (label
-          :class "battery-status"
-          :text {battery.status})
-        (label
-          :class "battery-wattage"
-          :text {battery.wattage}))
       (label)
       (box
         :space-evenly false

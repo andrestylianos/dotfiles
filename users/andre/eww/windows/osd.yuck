@@ -15,13 +15,6 @@
     :class "osd-container"
     :space-evenly false
     (revealer
-      :reveal {osd-brightness}
-      :transition "slideright"
-      (osd-part
-        :class "brightness"
-        :icon {brightness.icon}
-        :value {brightness.percent}))
-    (revealer
       :reveal {osd-volume}
       :transition "slideright"
       (osd-part

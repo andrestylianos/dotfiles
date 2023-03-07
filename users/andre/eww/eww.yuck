@@ -1,8 +1,7 @@
 (include "./modules/bluetooth.yuck")
-(include "./modules/bright.yuck")
 (include "./modules/clock.yuck")
 (include "./modules/music.yuck")
-(include "./modules/net.yuck")
+(include "./modules/wired.yuck")
 (include "./modules/sys.yuck")
 (include "./modules/variables.yuck")
 (include "./modules/volume.yuck")
@@ -23,10 +22,9 @@
   (box
     :space-evenly false
     :halign "end"
-    (bright)
     (volume-module)
     (bluetooth)
-    (net)
+    (network)
     (sys)
     (clock_module)))
 
