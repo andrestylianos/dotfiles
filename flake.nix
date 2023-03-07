@@ -44,6 +44,7 @@
           inherit pkgs;
           modules = [
             ./users/andre/home.nix
+            ./users/andre/eww
             hyprland.homeManagerModules.default
           ];
           extraSpecialArgs = {

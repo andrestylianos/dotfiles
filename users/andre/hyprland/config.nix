@@ -12,11 +12,13 @@ in {
   wayland.windowManager.hyprland.extraConfig = ''
     $mod = SUPER
 
+    monitor = HDMI-A-1,3840x2160@60,0x0,2
+
     # scale apps
     exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
-    # exec-once = eww open bar
-    exec-once = waybar
+    exec-once = eww open bar
+    # exec-once = waybar
 
     misc {
       # enable Variable Frame Rate

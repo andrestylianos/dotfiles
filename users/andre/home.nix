@@ -223,6 +223,16 @@ in {
     #nix-direnv.enableFlakes = true;
   };
 
+  programs.eww-hyprland = {
+    enable = true;
+
+    # default package
+    package = pkgs.eww-wayland;
+
+    # set to true to reload on change
+    autoReload = true;
+  };
+
   programs.git = {
     enable = true;
     userName = "André Stylianos Ramos";
@@ -414,6 +424,8 @@ in {
     playerctl
     #
     ## eww-hyprland
+    material-design-icons
+    jost
   ];
 
 
