@@ -111,6 +111,7 @@ in {
 
   imports = [
     ./hyprland/config.nix
+    ./shell/bin.nix
   ];
 
   # Use sway desktop environment with Wayland display server
@@ -334,6 +335,7 @@ in {
     ];
   };
 
+  services.playerctld.enable = true;
   services.emacs = {
     enable = true;
     package = my-doom-emacs;
@@ -407,8 +409,11 @@ in {
     wofi
     xdg_utils
     xwayland # compatibility layer with XOrg for wayland
-    #grim # screenshot functionality
-    #slurp # screenshot functionality
+    grim # screenshot functionality
+    slurp # screenshot functionality
+    playerctl
+    #
+    ## eww-hyprland
   ];
 
 

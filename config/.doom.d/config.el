@@ -80,7 +80,6 @@
 ;; they are implemented.
 ;;
 ;;
-(setq doom-localleader-key ",")
 
 (setq  cider-refresh-before-fn "integrant.repl/suspend")
 (setq  cider-refresh-after-fn "integrant.repl/resume")

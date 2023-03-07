@@ -15,7 +15,8 @@ in {
     # scale apps
     exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
-    exec-once = eww open bar
+    # exec-once = eww open bar
+    exec-once = waybar
 
     misc {
       # enable Variable Frame Rate
@@ -110,7 +111,9 @@ in {
 
     # utility
     # launcher
-    bindr = $mod, SUPER_L, exec, pkill .${launcher}-wrapped || run-as-service ${launcher}
+    # bindr = $mod, SUPER_L, exec, pkill .${launcher}-wrapped || run-as-service ${launcher} --show run
+    # bindr = $mod, D, exec, pkill .${launcher}-wrapped || run-as-service ${launcher} --show run
+    bindr = $mod, D, exec, ${launcher} --show run
     # terminal
     bind = $mod, Return, exec, run-as-service kitty
     # logout menu
