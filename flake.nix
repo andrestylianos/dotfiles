@@ -19,10 +19,14 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows="nixpkgs-unstable";
     };
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
   };
 
-  outputs = { nixpkgs, home-manager, nur, doom-emacs-src, hyprland, nixpkgs-unstable, ... }:
+  outputs = { nixpkgs, home-manager, nur, doom-emacs-src, hyprland, nixpkgs-unstable, hyprland-contrib, ... }:
     let
       system = "x86_64-linux";
 
@@ -49,6 +53,7 @@
           ];
           extraSpecialArgs = {
             doom-emacs-src = doom-emacs-src;
+            hyprland-contrib = hyprland-contrib;
           };
         };
       };

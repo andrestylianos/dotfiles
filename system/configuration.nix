@@ -50,6 +50,8 @@
     LC_TIME = "pt_PT.UTF-8";
   };
 
+  services.dbus.enable = true;
+
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -65,30 +67,39 @@
 
     #GNOME
     displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    #desktopManager.gnome.enable = false;
   };
 
   programs.dconf.enable = true;
-services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  programs.gnome-disks.enable = true;
+  services.udisks2.enable = true;
+  #services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
-  environment.gnome.excludePackages = (with pkgs; [
-  gnome-photos
-  gnome-tour
-]) ++ (with pkgs.gnome; [
-  cheese # webcam tool
-  gnome-music
-  gnome-terminal
-  gedit # text editor
-  epiphany # web browser
-  geary # email reader
-  evince # document viewer
-  gnome-characters
-  totem # video player
-  tali # poker game
-  iagno # go game
-  hitori # sudoku game
-  atomix # puzzle game
-]);
+  #environment.gnome.excludePackages = (with pkgs; [
+  #gnome-photos
+  #gnome-tour
+#]) ++ (with pkgs.gnome; [
+#  cheese # webcam tool
+#  gnome-music
+#  gnome-terminal
+#  gedit # text editor
+#  epiphany # web browser
+#  geary # email reader
+#  evince # document viewer
+#  gnome-characters
+#  totem # video player
+#  tali # poker game
+#  iagno # go game
+#  hitori # sudoku game
+#  atomix # puzzle game
+#]);
+
+  services.syncthing = {
+    enable = true;
+    user = "andre";
+    dataDir = "/home/andre/Backup";    # Default folder for new synced folders
+    configDir = "/home/andre/.config/syncthing";   # Folder for Syncthing's settings and keys
+  };
 
   programs.zsh.enable = true;
 
@@ -136,7 +147,7 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
-    gnome.gnome-tweaks
+    #gnome.gnome-tweaks
     # firefox
     ## Hyprland
     qt5.qtwayland
@@ -150,16 +161,16 @@ services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   programs.hyprland.enable = true;
 
-  xdg = {
-    portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-gnome
-      ];
-      gtkUsePortal = true;
-    };
-  };
+#  xdg = {
+#    portal = {
+#      enable = true;
+#      extraPortals = with pkgs; [
+#        xdg-desktop-portal-wlr
+#        xdg-desktop-portal-gnome
+#      ];
+#      gtkUsePortal = true;
+#    };
+#  };
 
   security = {
     pam.services = {

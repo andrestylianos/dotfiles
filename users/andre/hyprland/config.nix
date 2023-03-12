@@ -6,8 +6,7 @@
 
   homeDir = config.home.homeDirectory;
 
-  emoji = "${pkgs.wofi-emoji}/bin/wofi-emoji";
-  launcher = "wofi";
+  launcher = "fuzzel";
 in {
   wayland.windowManager.hyprland.extraConfig = ''
     $mod = SUPER
@@ -16,6 +15,12 @@ in {
 
     # scale apps
     exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+
+    exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+    exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+    exec-once = wl-paste --watch cliphist store
+
 
     exec-once = eww open bar
     # exec-once = waybar
@@ -30,6 +35,8 @@ in {
 
     input {
       kb_layout = us
+      kb_variant = intl
+      numlock_by_default = true
 
       # focus change on cursor move
       follow_mouse = 1
@@ -116,14 +123,13 @@ in {
     # bindr = $mod, SUPER_L, exec, pkill .${launcher}-wrapped || run-as-service ${launcher} --show run
     # bindr = $mod, D, exec, pkill .${launcher}-wrapped || run-as-service ${launcher} --show run
     bindr = $mod, D, exec, ${launcher} --show run
+    bindr = $mod, V, exec, cliphist list | fuzzel -d | cliphist decode | wl-copy
     # terminal
     bind = $mod, Return, exec, run-as-service kitty
     # logout menu
     bind = $mod, Escape, exec, wlogout -p layer-shell
     # lock screen
     bind = $mod, L, exec, loginctl lock-session
-    # emoji picker
-    bind = $mod, E, exec, ${emoji}
     # select area to perform OCR on
     bind = $mod, O, exec, run-as-service wl-ocr
 
@@ -166,15 +172,15 @@ in {
 
     # screenshot
     # stop animations while screenshotting; makes black border go away
-    #$screenshotarea = hyprctl keyword animation "fadeOut,0,0,default"; grimblast --notify copysave area; hyprctl keyword animation "fadeOut,1,4,default"
-    #bind = , Print, exec, $screenshotarea
-    #bind = $mod SHIFT, R, exec, $screenshotarea
+    $screenshotarea = hyprctl keyword animation "fadeOut,0,0,default"; grimblast --notify copysave area; hyprctl keyword animation "fadeOut,1,4,default"
+    bind = , Print, exec, $screenshotarea
+    bind = $mod SHIFT, R, exec, $screenshotarea
 
-    #bind = CTRL, Print, exec, grimblast --notify --cursor copysave output
-    #bind = $mod SHIFT CTRL, R, exec, grimblast --notify --cursor copysave output
+    bind = CTRL, Print, exec, grimblast --notify --cursor copysave output
+    bind = $mod SHIFT CTRL, R, exec, grimblast --notify --cursor copysave output
 
-    #bind = ALT, Print, exec, grimblast --notify --cursor copysave screen
-    #bind = $mod SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen
+    bind = ALT, Print, exec, grimblast --notify --cursor copysave screen
+    bind = $mod SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen
 
     # workspaces
     # binds mod + [shift +] {1..10} to [move to] ws {1..10}
