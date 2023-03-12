@@ -302,6 +302,15 @@ in {
     };
   };
 
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      dracula-theme.theme-dracula
+      asvetliakov.vscode-neovim
+      bbenoist.nix
+    ];
+  };
+
   wayland.windowManager.hyprland.enable = true;
 
   programs.zsh = {
