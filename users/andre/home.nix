@@ -483,19 +483,27 @@ set report=0       " Always report changed lines
     ];
     userSettings = {
       "workbench.colorTheme" = "Dracula";
+	  "workbench.editor.highlightModifiedTabs" = true;
+	  "window.zoomLevel" = -2;
       "editor" = {
         "guides" = {
           "bracketPairs" = true;
           "bracketPairsHorizontal" = true;
         };
+		"fontSize" = 18;
         "fontLigatures" = true;
+		"fontFamily" = "Fira Code, Menlo, Monaco, 'Courier New', monospace";
         "minimap" = {
-          "enabled" = false; 
+          "enabled" = false;
         };
+		"accessibilitySupport" = "off";
       };
+	  "explorer.excludeGitIgnore" = true;
+	  "files.trimTrailingWhitespace" = true;
       "extensions.experimental.affinity" = {
         "asvetliakov.vscode-neovim" = 1;
       };
+	  "extensions.ignoreRecommendations" = true;
       "calva.clojureLspPath" = "${pkgs.clojure-lsp}/bin/clojure-lsp";
       "calva.paredit.defaultKeyMap" = "none";
       "calva.showCalvaSaysOnStart" = false;
