@@ -30,6 +30,15 @@
     let
       system = "x86_64-linux";
 
+      overlay-unstable = final: prev: {
+        # use this variant if unfree packages are needed:
+         unstable = import nixpkgs-unstable {
+           inherit system;
+           config.allowUnfree = true;
+         };
+
+      };
+
       pkgs = import nixpkgs {
         inherit system;
         config = {
@@ -37,6 +46,7 @@
         };
         overlays = [
           nur.overlay
+          overlay-unstable
         ];
       };
 

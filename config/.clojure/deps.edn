@@ -1,2 +1,4 @@
 {:mvn/repos {"cognitect-dev-tools"
-             {:url "https://dev-tools.cognitect.com/maven/releases/"}}}
+             {:url "https://dev-tools.cognitect.com/maven/releases/"}}
+
+ :aliases {:dev {:extra-deps {djblue/portal {:mvn/version "RELEASE"}}}}}
