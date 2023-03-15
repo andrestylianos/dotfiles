@@ -305,10 +305,11 @@ in {
    extraConfig = ''
     let mapleader="\<space>"
     let maplocalleader=","
-    
+
     nmap <localleader>eb <Cmd>call VSCodeNotify('calva.loadFile')<CR>
     nmap <localleader>ed <Cmd>call VSCodeNotify('calva.evaluateCurrentTopLevelForm')<CR>
     nmap <localleader>ee <Cmd>call VSCodeNotify('calva.evaluateSelection')<CR>
+    nmap <localleader>ef <Cmd>call VSCodeNotify('calva.evaluateEnclosingForm')<CR>
     nmap <localleader>ei <Cmd>call VSCodeNotify('calva.interruptAllEvaluations')<CR>
     nmap <localleader>rc <Cmd>call VSCodeNotify('calva.connect')<CR>
     nmap <localleader>rr <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'r')<CR>
@@ -418,7 +419,7 @@ set report=0       " Always report changed lines
         command = "vscode-neovim.send";
         key = "shift+.";
         when = "editorTextFocus && neovim.mode != insert";
-        args = "<gt>";
+        args = ">";
       }
       {
         command = "vscode-neovim.send";
