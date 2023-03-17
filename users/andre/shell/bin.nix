@@ -1,5 +1,8 @@
 {
-  config, lib, pkgs, ...
+  config,
+  lib,
+  pkgs,
+  ...
 }: let
   apply-hm-env = pkgs.writeShellScript "apply-hm-env" ''
     ${lib.optionalString (config.home.sessionPath != []) ''

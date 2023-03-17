@@ -1,12 +1,18 @@
-{ config, pkgs, lib, doom-emacs-src, hyprland-contrib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  doom-emacs-src,
+  hyprland-contrib,
+  ...
+}: let
   my-doom-emacs = let
     emacsPkg = with pkgs;
       (emacsPackagesFor (emacs.override {
         nativeComp = true;
         withPgtk = true;
-      })).emacsWithPackages (ps: with ps; [ vterm all-the-icons ]);
+      }))
+      .emacsWithPackages (ps: with ps; [vterm all-the-icons]);
     pathDeps = with pkgs; [
       #python3
       aspell
@@ -24,20 +30,21 @@ let
 
       nixfmt
     ];
-  in emacsPkg // (pkgs.symlinkJoin {
-    name = "my-doom-emacs";
-    paths = [ emacsPkg ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/emacs \
-        --prefix PATH : ${lib.makeBinPath pathDeps} \
-        --set LSP_USE_PLISTS true
-      wrapProgram $out/bin/emacsclient \
-        --prefix PATH : ${lib.makeBinPath pathDeps} \
-        --set LSP_USE_PLISTS true
-    '';
-  });
-
+  in
+    emacsPkg
+    // (pkgs.symlinkJoin {
+      name = "my-doom-emacs";
+      paths = [emacsPkg];
+      nativeBuildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/emacs \
+          --prefix PATH : ${lib.makeBinPath pathDeps} \
+          --set LSP_USE_PLISTS true
+        wrapProgram $out/bin/emacsclient \
+          --prefix PATH : ${lib.makeBinPath pathDeps} \
+          --set LSP_USE_PLISTS true
+      '';
+    });
 in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -54,23 +61,27 @@ in {
   #  };
   #};
 
-  nixpkgs.overlays = [(
-    self: super: {
-      slack  = super.slack.overrideAttrs (old: {
-        installPhase = old.installPhase + ''
-          rm $out/bin/slack
+  nixpkgs.overlays = [
+    (
+      self: super: {
+        slack = super.slack.overrideAttrs (old: {
+          installPhase =
+            old.installPhase
+            + ''
+              rm $out/bin/slack
 
-          makeWrapper $out/lib/slack/slack $out/bin/slack \
-          --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
-          --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-          --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer %U"
-        '';
-      });
-      waybar = super.waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      });
-    }
-  )];
+              makeWrapper $out/lib/slack/slack $out/bin/slack \
+              --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
+              --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
+              --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer %U"
+            '';
+        });
+        waybar = super.waybar.overrideAttrs (oldAttrs: {
+          mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+        });
+      }
+    )
+  ];
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -83,9 +94,9 @@ in {
   home.stateVersion = "22.11";
 
   home = {
-    sessionPath = [ "${config.xdg.configHome}/doom-emacs/bin" ];
+    sessionPath = ["${config.xdg.configHome}/doom-emacs/bin"];
     sessionVariables = {
-	  SSH_ASKPASS_REQUIRE = "prefer";
+      SSH_ASKPASS_REQUIRE = "prefer";
       DOOMDIR = "${config.xdg.configHome}/doom-config";
       DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
       NIXOS_OZONE_WL = "1";
@@ -97,7 +108,7 @@ in {
       XDG_SESSION_TYPE = "wayland";
     };
 
-    file = { 
+    file = {
       ".emacs-profiles.el".text = ''
         (("default" . ((user-emacs-directory . "${config.xdg.configHome}/my-emacs")))
          ("doom" . ((user-emacs-directory . "${config.xdg.configHome}/doom-emacs")
@@ -105,7 +116,7 @@ in {
                             ("DOOMLOCALDIR" . "${config.home.sessionVariables.DOOMLOCALDIR}"))))))
       '';
       ".emacs-profile".text = "doom";
-      
+
       ".emacs.d".source = pkgs.fetchFromGitHub {
         owner = "plexus";
         repo = "chemacs2";
@@ -140,25 +151,31 @@ in {
       terminal = "kitty";
       menu = "wofi --show run";
       # Status bar(s)
-      bars = [{
-        fonts.size = 20.0;
-        # comment below line for default
-        command = "waybar";
-        position = "top";
-      }];
+      bars = [
+        {
+          fonts.size = 20.0;
+          # comment below line for default
+          command = "waybar";
+          position = "top";
+        }
+      ];
       assigns = {
-        "1: web" = [{ class = "Firefox"; }];
-        "2: work" = [{ class = "Brave"; }];
-        "3: code" = [{ class = "Emacs"; }];
-        "5: comms" = [{ class = "Slack"; }];
-        "0: extra" = [{ class = "Firefox"; window_role = "About"; }];
+        "1: web" = [{class = "Firefox";}];
+        "2: work" = [{class = "Brave";}];
+        "3: code" = [{class = "Emacs";}];
+        "5: comms" = [{class = "Slack";}];
+        "0: extra" = [
+          {
+            class = "Firefox";
+            window_role = "About";
+          }
+        ];
       };
       gaps = {
         outer = 10;
       };
       workspaceAutoBackAndForth = true;
       startup = [
-
         # Services
         #{ command = "systemctl --user restart kanshi.service"; always = true; }
 
@@ -174,8 +191,7 @@ in {
         }
 
         # Applets
-        { command = "blueman-applet"; }
-
+        {command = "blueman-applet";}
       ];
       # Display device configuration
       output = {
@@ -205,10 +221,10 @@ in {
   systemd.user.services.sway = {
     Unit = {
       Description = "Sway - Wayland window manager";
-      Documentation = [ "man:sway(5)" ];
-      BindsTo = [ "graphical-session.target" ];
-      Wants = [ "graphical-session-pre.target" ];
-      After = [ "graphical-session-pre.target" ];
+      Documentation = ["man:sway(5)"];
+      BindsTo = ["graphical-session.target"];
+      Wants = ["graphical-session-pre.target"];
+      After = ["graphical-session-pre.target"];
     };
     Service = {
       Type = "simple";
@@ -284,99 +300,99 @@ in {
   };
 
   programs.neovim = {
-   enable = true;
-   package = pkgs.unstable.neovim-unwrapped;
-   plugins = with pkgs.unstable.vimPlugins; [
-    {
-      plugin = leap-nvim;
-      config = "lua require('leap').add_default_mappings()";
-    } 
-    {
-      plugin = marks-nvim;
-      config = "lua require('marks').setup({})";
-    }
-    {
-      plugin = nvim-surround;
-      config = "lua require('nvim-surround').setup({})";
-    }
-    vim-repeat
-    vim-sexp
-    vim-sexp-mappings-for-regular-people
-   ];
-   extraConfig = ''
-    let mapleader="\<space>"
-    let maplocalleader=","
+    enable = true;
+    package = pkgs.unstable.neovim-unwrapped;
+    plugins = with pkgs.unstable.vimPlugins; [
+      {
+        plugin = leap-nvim;
+        config = "lua require('leap').add_default_mappings()";
+      }
+      {
+        plugin = marks-nvim;
+        config = "lua require('marks').setup({})";
+      }
+      {
+        plugin = nvim-surround;
+        config = "lua require('nvim-surround').setup({})";
+      }
+      vim-repeat
+      vim-sexp
+      vim-sexp-mappings-for-regular-people
+    ];
+    extraConfig = ''
+          let mapleader="\<space>"
+          let maplocalleader=","
 
-    nmap <localleader>eb <Cmd>call VSCodeNotify('calva.loadFile')<CR>
-    nmap <localleader>ed <Cmd>call VSCodeNotify('calva.evaluateCurrentTopLevelForm')<CR>
-    nmap <localleader>ee <Cmd>call VSCodeNotify('calva.evaluateSelection')<CR>
-    nmap <localleader>ef <Cmd>call VSCodeNotify('calva.evaluateEnclosingForm')<CR>
-    nmap <localleader>ei <Cmd>call VSCodeNotify('calva.interruptAllEvaluations')<CR>
-    nmap <localleader>rc <Cmd>call VSCodeNotify('calva.connect')<CR>
-    nmap <localleader>rr <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'r')<CR>
-    nmap <localleader>po <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'p')<CR>
-    nmap <localleader>pc <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'k')<CR>
-    nmap <localleader>pe <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'e')<CR>
-    nmap <localleader>pf <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'f')<CR>
-    nmap <localleader>pd <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'd')<CR>
-    nmap <localleader>px <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'x')<CR>
-    nmap <localleader>pi <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'q')<CR>
-    nmap <localleader>p0 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '0')<CR>
-    nmap <localleader>p1 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '1')<CR>
-    nmap <localleader>p2 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '2')<CR>
-    xmap gc  <Plug>VSCodeCommentary
-    nmap gc  <Plug>VSCodeCommentary
-    omap gc  <Plug>VSCodeCommentary
-    nmap gcc <Plug>VSCodeCommentaryLine
+          nmap <localleader>eb <Cmd>call VSCodeNotify('calva.loadFile')<CR>
+          nmap <localleader>ed <Cmd>call VSCodeNotify('calva.evaluateCurrentTopLevelForm')<CR>
+          nmap <localleader>ee <Cmd>call VSCodeNotify('calva.evaluateSelection')<CR>
+          nmap <localleader>ef <Cmd>call VSCodeNotify('calva.evaluateEnclosingForm')<CR>
+          nmap <localleader>ei <Cmd>call VSCodeNotify('calva.interruptAllEvaluations')<CR>
+          nmap <localleader>rc <Cmd>call VSCodeNotify('calva.connect')<CR>
+          nmap <localleader>rr <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'r')<CR>
+          nmap <localleader>po <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'p')<CR>
+          nmap <localleader>pc <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'k')<CR>
+          nmap <localleader>pe <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'e')<CR>
+          nmap <localleader>pf <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'f')<CR>
+          nmap <localleader>pd <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'd')<CR>
+          nmap <localleader>px <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'x')<CR>
+          nmap <localleader>pi <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'q')<CR>
+          nmap <localleader>p0 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '0')<CR>
+          nmap <localleader>p1 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '1')<CR>
+          nmap <localleader>p2 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '2')<CR>
+          xmap gc  <Plug>VSCodeCommentary
+          nmap gc  <Plug>VSCodeCommentary
+          omap gc  <Plug>VSCodeCommentary
+          nmap gcc <Plug>VSCodeCommentaryLine
 
-    highlight OperatorSandwichBuns guifg='#aa91a0' gui=underline ctermfg=172 cterm=underline
-highlight OperatorSandwichChange guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline
-highlight OperatorSandwichAdd guibg='#b1fa87' gui=none ctermbg='green' cterm=none
-highlight OperatorSandwichDelete guibg='#cf5963' gui=none ctermbg='red' cterm=none
-    
-    set signcolumn=yes:1
-    set shortmess=atOI " No help Uganda information, and overwrite read messages to avoid PRESS ENTER prompts
-set ignorecase     " Case insensitive search
-set smartcase      " ... but case sensitive when uc present
-set scrolljump=5   " Line to scroll when cursor leaves screen
-set scrolloff=3    " Minumum lines to keep above and below cursor
-set nowrap         " Do not wrap long lines
-set shiftwidth=4   " Use indents of 4 spaces
-set tabstop=4      " An indentation every four columns
-set softtabstop=4  " Let backspace delete indent
-set splitright     " Puts new vsplit windows to the right of the current
-set splitbelow     " Puts new split windows to the bottom of the current
-set mousehide      " Hide the mouse cursor while typing
-set hidden         " Allow buffer switching without saving
-set t_Co=256       " Use 256 colors
-set ruler          " Show the ruler
-set showcmd        " Show partial commands in status line and Selected characters/lines in visual mode
-set showmode       " Show current mode in command-line
-set showmatch      " Show matching brackets/parentthesis
-set matchtime=5    " Show matching time
-set report=0       " Always report changed lines
-    set linespace=0    " No extra spaces between rows
-    set pumheight=20   " Avoid the pop up menu occupying the whole screen
-    set fileformats=unix,dos,mac        " Use Unix as the standard file type
-    set number                  " Line numbers on
+          highlight OperatorSandwichBuns guifg='#aa91a0' gui=underline ctermfg=172 cterm=underline
+      highlight OperatorSandwichChange guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline
+      highlight OperatorSandwichAdd guibg='#b1fa87' gui=none ctermbg='green' cterm=none
+      highlight OperatorSandwichDelete guibg='#cf5963' gui=none ctermbg='red' cterm=none
 
-    set whichwrap+=<,>,h,l  " Allow backspace and cursor keys to cross line boundaries
+          set signcolumn=yes:1
+          set shortmess=atOI " No help Uganda information, and overwrite read messages to avoid PRESS ENTER prompts
+      set ignorecase     " Case insensitive search
+      set smartcase      " ... but case sensitive when uc present
+      set scrolljump=5   " Line to scroll when cursor leaves screen
+      set scrolloff=3    " Minumum lines to keep above and below cursor
+      set nowrap         " Do not wrap long lines
+      set shiftwidth=4   " Use indents of 4 spaces
+      set tabstop=4      " An indentation every four columns
+      set softtabstop=4  " Let backspace delete indent
+      set splitright     " Puts new vsplit windows to the right of the current
+      set splitbelow     " Puts new split windows to the bottom of the current
+      set mousehide      " Hide the mouse cursor while typing
+      set hidden         " Allow buffer switching without saving
+      set t_Co=256       " Use 256 colors
+      set ruler          " Show the ruler
+      set showcmd        " Show partial commands in status line and Selected characters/lines in visual mode
+      set showmode       " Show current mode in command-line
+      set showmatch      " Show matching brackets/parentthesis
+      set matchtime=5    " Show matching time
+      set report=0       " Always report changed lines
+          set linespace=0    " No extra spaces between rows
+          set pumheight=20   " Avoid the pop up menu occupying the whole screen
+          set fileformats=unix,dos,mac        " Use Unix as the standard file type
+          set number                  " Line numbers on
 
-    set termencoding=utf-8
-    set fileencoding=utf-8
-    set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+          set whichwrap+=<,>,h,l  " Allow backspace and cursor keys to cross line boundaries
 
-    set wildignore+=*swp,*.class,*.pyc,*.png,*.jpg,*.gif,*.zip
-    set wildignore+=*/tmp/*,*.o,*.obj,*.so     " Unix
-    set wildignore+=*\\tmp\\*,*.exe            " Windows
+          set termencoding=utf-8
+          set fileencoding=utf-8
+          set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 
-    set clipboard=unnamedplus,unnamed
+          set wildignore+=*swp,*.class,*.pyc,*.png,*.jpg,*.gif,*.zip
+          set wildignore+=*/tmp/*,*.o,*.obj,*.so     " Unix
+          set wildignore+=*\\tmp\\*,*.exe            " Windows
 
-    set undofile             " Persistent undo
-    set undolevels=1000      " Maximum number of changes that can be undone
-    set undoreload=10000
+          set clipboard=unnamedplus,unnamed
 
-   '';
+          set undofile             " Persistent undo
+          set undolevels=1000      " Maximum number of changes that can be undone
+          set undoreload=10000
+
+    '';
   };
 
   programs.obs-studio = {
@@ -401,25 +417,27 @@ set report=0       " Always report changed lines
   programs.vscode = {
     enable = true;
     package = pkgs.unstable.vscode;
-    extensions = with pkgs.unstable.vscode-extensions; [
-      asvetliakov.vscode-neovim
-      betterthantomorrow.calva
-      dracula-theme.theme-dracula
-      mkhl.direnv
-    ] ++ pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        name = "portal";
-        publisher = "djblue";
-        version = "0.37.0";
-        sha256 = "kn9KCk0rlfF5LKTlidmDVc6VXCm2WKuu12JON0pNpCU=";
-      }
-	  {
-        name = "nix-ide";
-        publisher = "jnoortheen";
-        version = "0.2.1";
-		sha256 = "yC4ybThMFA2ncGhp8BYD7IrwYiDU3226hewsRvJYKy4=";
-      }
-    ];
+    extensions = with pkgs.unstable.vscode-extensions;
+      [
+        asvetliakov.vscode-neovim
+        betterthantomorrow.calva
+        dracula-theme.theme-dracula
+        mkhl.direnv
+      ]
+      ++ pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "portal";
+          publisher = "djblue";
+          version = "0.37.0";
+          sha256 = "kn9KCk0rlfF5LKTlidmDVc6VXCm2WKuu12JON0pNpCU=";
+        }
+        {
+          name = "nix-ide";
+          publisher = "jnoortheen";
+          version = "0.2.1";
+          sha256 = "yC4ybThMFA2ncGhp8BYD7IrwYiDU3226hewsRvJYKy4=";
+        }
+      ];
     keybindings = [
       {
         command = "vscode-neovim.send";
@@ -490,29 +508,29 @@ set report=0       " Always report changed lines
     ];
     userSettings = {
       "workbench.colorTheme" = "Dracula";
-	  "workbench.editor.highlightModifiedTabs" = true;
-	  "window.zoomLevel" = -2;
+      "workbench.editor.highlightModifiedTabs" = true;
+      "window.zoomLevel" = -2;
       "editor" = {
         "guides" = {
           "bracketPairs" = true;
           "bracketPairsHorizontal" = true;
         };
-		"fontSize" = 18;
+        "fontSize" = 18;
         "fontLigatures" = true;
-		"fontFamily" = "Fira Code, Menlo, Monaco, 'Courier New', monospace";
+        "fontFamily" = "Fira Code, Menlo, Monaco, 'Courier New', monospace";
         "minimap" = {
           "enabled" = false;
         };
-		"accessibilitySupport" = "off";
+        "accessibilitySupport" = "off";
       };
-	  "explorer.excludeGitIgnore" = true;
-	  "files.trimTrailingWhitespace" = true;
+      "explorer.excludeGitIgnore" = true;
+      "files.trimTrailingWhitespace" = true;
       "extensions.experimental.affinity" = {
         "asvetliakov.vscode-neovim" = 1;
       };
-	  "nix.enableLanguageServer" = true;
+      "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
-	  "extensions.ignoreRecommendations" = true;
+      "extensions.ignoreRecommendations" = true;
       "calva.clojureLspPath" = "${pkgs.clojure-lsp}/bin/clojure-lsp";
       "calva.paredit.defaultKeyMap" = "none";
       "calva.showCalvaSaysOnStart" = false;
@@ -540,7 +558,7 @@ set report=0       " Always report changed lines
     initExtra = ''
       bindkey '^ ' autosuggest-accept
       autopair-init
-                              '';
+    '';
 
     plugins = with pkgs; [
       {
@@ -587,9 +605,9 @@ set report=0       " Always report changed lines
   services.gpg-agent = {
     enable = true;
     pinentryFlavor = null;
-	extraConfig = ''
-pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
-	'';
+    extraConfig = ''
+      pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
+    '';
   };
 
   services.swayidle = {
@@ -623,8 +641,8 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
 
     gnome.nautilus
 
-	# Nix
-	nil
+    # Nix
+    nil
     nix-prefetch-github
     alejandra
 
@@ -641,7 +659,7 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
     slack
 
     # Fonts
-    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"];})
 
     # Compression
     atool
@@ -672,7 +690,6 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
     material-design-icons
     jost
   ];
-
 
   xdg = {
     enable = true;
@@ -721,10 +738,8 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
 
       "gtk-4.0/settings.ini".source = ../../config/gtk-4.0/settings.ini;
     };
-
   };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
 }

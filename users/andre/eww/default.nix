@@ -36,7 +36,7 @@
     wget
     wireplumber
     wlogout
-     material-design-icons
+    material-design-icons
     jost
   ];
 

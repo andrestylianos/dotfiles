@@ -1,14 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -57,7 +58,7 @@
     layout = "us";
     xkbVariant = "alt-intl";
     enable = true;
-    videoDrivers = [ "amdgpu" ];
+    videoDrivers = ["amdgpu"];
 
     # KDE Plasma 5
     #displayManager.lightdm = {
@@ -78,27 +79,27 @@
   #environment.gnome.excludePackages = (with pkgs; [
   #gnome-photos
   #gnome-tour
-#]) ++ (with pkgs.gnome; [
-#  cheese # webcam tool
-#  gnome-music
-#  gnome-terminal
-#  gedit # text editor
-#  epiphany # web browser
-#  geary # email reader
-#  evince # document viewer
-#  gnome-characters
-#  totem # video player
-#  tali # poker game
-#  iagno # go game
-#  hitori # sudoku game
-#  atomix # puzzle game
-#]);
+  #]) ++ (with pkgs.gnome; [
+  #  cheese # webcam tool
+  #  gnome-music
+  #  gnome-terminal
+  #  gedit # text editor
+  #  epiphany # web browser
+  #  geary # email reader
+  #  evince # document viewer
+  #  gnome-characters
+  #  totem # video player
+  #  tali # poker game
+  #  iagno # go game
+  #  hitori # sudoku game
+  #  atomix # puzzle game
+  #]);
 
   services.syncthing = {
     enable = true;
     user = "andre";
-    dataDir = "/home/andre/Backup";    # Default folder for new synced folders
-    configDir = "/home/andre/.config/syncthing";   # Folder for Syncthing's settings and keys
+    dataDir = "/home/andre/Backup"; # Default folder for new synced folders
+    configDir = "/home/andre/.config/syncthing"; # Folder for Syncthing's settings and keys
   };
 
   programs.zsh.enable = true;
@@ -127,7 +128,7 @@
   users.users.andre = {
     isNormalUser = true;
     description = "André Ramos";
-    extraGroups = [ "networkmanager" "wheel" "podman" ];
+    extraGroups = ["networkmanager" "wheel" "podman"];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
@@ -136,12 +137,11 @@
   nixpkgs.config.allowUnfree = true;
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = ["nix-command" "flakes"];
 
     substituters = ["https://hyprland.cachix.org"];
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
-
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -153,28 +153,27 @@
     qt5.qtwayland
     qt6.qtwayland
     libsForQt5.polkit-kde-agent
-	plasma5Packages.ksshaskpass
-	plasma5Packages.kwallet
-	plasma5Packages.kwalletmanager
-	plasma5Packages.kwallet-pam
+    plasma5Packages.ksshaskpass
+    plasma5Packages.kwallet
+    plasma5Packages.kwalletmanager
+    plasma5Packages.kwallet-pam
     ## Docker
     arion
     docker-client
-
   ];
 
   programs.hyprland.enable = true;
 
-#  xdg = {
-#    portal = {
-#      enable = true;
-#      extraPortals = with pkgs; [
-#        xdg-desktop-portal-wlr
-#        xdg-desktop-portal-gnome
-#      ];
-#      gtkUsePortal = true;
-#    };
-#  };
+  #  xdg = {
+  #    portal = {
+  #      enable = true;
+  #      extraPortals = with pkgs; [
+  #        xdg-desktop-portal-wlr
+  #        xdg-desktop-portal-gnome
+  #      ];
+  #      gtkUsePortal = true;
+  #    };
+  #  };
 
   security = {
     pam.services = {
@@ -202,19 +201,18 @@
     '';
   };
 
-
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   # For 32 bit applications
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.extraPackages = with pkgs; [
-  amdvlk
-];
-# For 32 bit applications
-# Only available on unstable
-hardware.opengl.extraPackages32 = with pkgs; [
-  driversi686Linux.amdvlk
-];
+    amdvlk
+  ];
+  # For 32 bit applications
+  # Only available on unstable
+  hardware.opengl.extraPackages32 = with pkgs; [
+    driversi686Linux.amdvlk
+  ];
 
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
   sound.enable = false;
@@ -229,28 +227,28 @@ hardware.opengl.extraPackages32 = with pkgs; [
     pulse.enable = true;
     wireplumber.enable = true;
     media-session.config.bluez-monitor.rules = [
-    {
-      # Matches all cards
-      matches = [ { "device.name" = "~bluez_card.*"; } ];
-      actions = {
-        "update-props" = {
-          "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
-          # mSBC is not expected to work on all headset + adapter combinations.
-          "bluez5.msbc-support" = true;
-          # SBC-XQ is not expected to work on all headset + adapter combinations.
-          "bluez5.sbc-xq-support" = true;
+      {
+        # Matches all cards
+        matches = [{"device.name" = "~bluez_card.*";}];
+        actions = {
+          "update-props" = {
+            "bluez5.reconnect-profiles" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
+            # mSBC is not expected to work on all headset + adapter combinations.
+            "bluez5.msbc-support" = true;
+            # SBC-XQ is not expected to work on all headset + adapter combinations.
+            "bluez5.sbc-xq-support" = true;
+          };
         };
-      };
-    }
-    {
-      matches = [
-        # Matches all sources
-        { "node.name" = "~bluez_input.*"; }
-        # Matches all outputs
-        { "node.name" = "~bluez_output.*"; }
-      ];
-    }
-  ];
+      }
+      {
+        matches = [
+          # Matches all sources
+          {"node.name" = "~bluez_input.*";}
+          # Matches all outputs
+          {"node.name" = "~bluez_output.*";}
+        ];
+      }
+    ];
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
   };
@@ -293,5 +291,4 @@ hardware.opengl.extraPackages32 = with pkgs; [
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }
