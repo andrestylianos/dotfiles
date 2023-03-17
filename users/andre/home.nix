@@ -579,7 +579,10 @@ set report=0       " Always report changed lines
 
   services.gpg-agent = {
     enable = true;
-    pinentryFlavor = "qt";
+    pinentryFlavor = null;
+	extraConfig = ''
+pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
+	'';
   };
 
   services.swayidle = {
@@ -596,7 +599,6 @@ set report=0       " Always report changed lines
     git
     git-crypt
     ghostscript
-    gnupg
     fd
     flameshot
     fzf
@@ -604,7 +606,8 @@ set report=0       " Always report changed lines
     my-doom-emacs
     nix-prefetch-github
     pdfarranger
-    pinentry-qt
+    kwalletcli
+
     ripgrep
     fuzzel
 
