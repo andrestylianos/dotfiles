@@ -403,7 +403,6 @@ set report=0       " Always report changed lines
     package = pkgs.unstable.vscode;
     extensions = with pkgs.unstable.vscode-extensions; [
       asvetliakov.vscode-neovim
-      bbenoist.nix
       betterthantomorrow.calva
       dracula-theme.theme-dracula
       mkhl.direnv
@@ -413,6 +412,12 @@ set report=0       " Always report changed lines
         publisher = "djblue";
         version = "0.37.0";
         sha256 = "kn9KCk0rlfF5LKTlidmDVc6VXCm2WKuu12JON0pNpCU=";
+      }
+	  {
+        name = "nix-ide";
+        publisher = "jnoortheen";
+        version = "0.2.1";
+		sha256 = "yC4ybThMFA2ncGhp8BYD7IrwYiDU3226hewsRvJYKy4=";
       }
     ];
     keybindings = [
@@ -505,6 +510,8 @@ set report=0       " Always report changed lines
       "extensions.experimental.affinity" = {
         "asvetliakov.vscode-neovim" = 1;
       };
+	  "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "${pkgs.nil}/bin/nil";
 	  "extensions.ignoreRecommendations" = true;
       "calva.clojureLspPath" = "${pkgs.clojure-lsp}/bin/clojure-lsp";
       "calva.paredit.defaultKeyMap" = "none";
@@ -604,7 +611,6 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
     fzf
     killall
     my-doom-emacs
-    nix-prefetch-github
     pdfarranger
     kwalletcli
 
@@ -616,6 +622,10 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
     clang
 
     gnome.nautilus
+
+	# Nix
+	nil
+    nix-prefetch-github
 
     # Clojure
     clojure-lsp
