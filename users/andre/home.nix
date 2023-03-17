@@ -530,6 +530,13 @@ in {
       };
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
+      "nix.serverSettings" = {
+        "nil" = {
+          "formatting" = {
+            "command" = ["alejandra"];
+          };
+        };
+      };
       "extensions.ignoreRecommendations" = true;
       "calva.clojureLspPath" = "${pkgs.clojure-lsp}/bin/clojure-lsp";
       "calva.paredit.defaultKeyMap" = "none";
