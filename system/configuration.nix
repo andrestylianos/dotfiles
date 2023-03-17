@@ -153,6 +153,10 @@
     qt5.qtwayland
     qt6.qtwayland
     libsForQt5.polkit-kde-agent
+	plasma5Packages.ksshaskpass
+	plasma5Packages.kwallet
+	plasma5Packages.kwalletmanager
+	plasma5Packages.kwallet-pam
     ## Docker
     arion
     docker-client
@@ -174,9 +178,11 @@
 
   security = {
     pam.services = {
-      login.enableGnomeKeyring = true;
-      sshd.enableGnomeKeyring = true;
-      lightdm.enableGnomeKeyring = true;
+      login.enableKwallet = true;
+      gdm.enableKwallet = true;
+      kdm.enableKwallet = true;
+      lightdm.enableKwallet = true;
+      sddm.enableKwallet = true;
 
       swaylock = {
         text = "auth include login";
@@ -186,6 +192,16 @@
       enable = true;
     };
   };
+
+  programs.ssh = {
+    startAgent = true;
+    askPassword = "${pkgs.plasma5Packages.ksshaskpass.out}/bin/ksshaskpass";
+
+    extraConfig = ''
+      AddKeysToAgent yes
+    '';
+  };
+
 
   #security.pam.services.kwallet = {
   #  name = "kwallet";

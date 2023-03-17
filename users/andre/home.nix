@@ -85,6 +85,7 @@ in {
   home = {
     sessionPath = [ "${config.xdg.configHome}/doom-emacs/bin" ];
     sessionVariables = {
+	  SSH_ASKPASS_REQUIRE = "prefer";
       DOOMDIR = "${config.xdg.configHome}/doom-config";
       DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
       NIXOS_OZONE_WL = "1";
