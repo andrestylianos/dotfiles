@@ -19,8 +19,9 @@ in {
     exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
-    exec-once = wl-paste --watch cliphist store
+	exec-once = ${pkgs.kwallet-pam}/libexec/pam_kwallet_init
 
+    exec-once = wl-paste --watch cliphist store
 
     exec-once = eww open bar
     # exec-once = waybar
@@ -87,16 +88,23 @@ in {
     windowrulev2 = workspace special silent, title:^(Firefox — Sharing Indicator)$
     windowrulev2 = workspace special silent, title:^(.*is sharing (your screen|a window)\.)$
 
+    windowrulev2 = float, class:^(kwalletd5)$
+    windowrulev2 = pin, class:^(kwalletd5)$
+    windowrulev2 = center, class:^(kwalletd5)$
+    windowrulev2 = dimaround, class:^(kwalletd5)$
+
+    windowrulev2 = workspace 1, class:^(.*Firefox)$
+    windowrulev2 = idleinhibit fullscreen, class:^(firefox)$
+    windowrulev2 = workspace 2, title:^(.*Brave)$
+    windowrulev2 = workspace 3, title:^(.*Visual Studio Code)$
+    windowrulev2 = workspace 5, title:^(.*Slack)$
+
     # start spotify tiled in ws9
     windowrulev2 = tile, class:^(Spotify)$
     windowrulev2 = workspace 9 silent, class:^(Spotify)$
 
-    # start Discord/WebCord in ws2
-    windowrulev2 = workspace 2, title:^(.*(Disc|WebC)ord.*)$
-
     # idle inhibit while watching videos
     windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
-    windowrulev2 = idleinhibit fullscreen, class:^(firefox)$
 
     # mouse movements
     bindm = $mod, mouse:272, movewindow
