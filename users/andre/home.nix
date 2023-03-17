@@ -626,6 +626,7 @@ pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
 	# Nix
 	nil
     nix-prefetch-github
+    alejandra
 
     # Clojure
     clojure-lsp
