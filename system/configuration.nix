@@ -95,13 +95,6 @@
   #  atomix # puzzle game
   #]);
 
-  services.syncthing = {
-    enable = true;
-    user = "andre";
-    dataDir = "/home/andre/Backup"; # Default folder for new synced folders
-    configDir = "/home/andre/.config/syncthing"; # Folder for Syncthing's settings and keys
-  };
-
   programs.zsh.enable = true;
 
   services.emacs = {
