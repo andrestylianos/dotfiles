@@ -5,13 +5,18 @@ on:
     - cron: "30 18 * * 1"
 
 jobs:
-  update-nix:
+  update-flakes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
       - name: Free disk space
-        run: .github/free_disk_space.sh
+        uses: easimon/maximize-build-space@v6
+        with:
+          overprovision-lvm: true
+          remove-android: true
+          remove-dotnet: true
+          remove-haskell: true
+
+      - uses: actions/checkout@v3
 
       - name: Install Nix
         uses: cachix/install-nix-action@v19
