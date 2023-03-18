@@ -33,7 +33,7 @@ jobs:
 
       - name: Build old home-manager
         run: |
-          nix build -o /tmp/old_hm .#homeConfigurations.andre.activationPackage
+          nix build -o /tmp/old_hm .#homeManagerConfigurations.andre.activationPackage
 
       - name: Update flake.nix
         run: |
@@ -45,7 +45,7 @@ jobs:
 
       - name: Build new home-manager
         run: |
-          nix build -o /tmp/new_hm .#homeConfigurations.andre.activationPackage
+          nix build -o /tmp/new_hm .#homeManagerConfigurations.andre.activationPackage
 
       - name: Get NixOS diff
         id: get-pr-body
