@@ -69,13 +69,14 @@
         ];
         extraSpecialArgs = {
           doom-emacs-src = doom-emacs-src;
+          hyprland = hyprland;
           hyprland-contrib = hyprland-contrib;
         };
       };
     };
     nixosConfigurations = {
       uruk = lib.nixosSystem {
-        inherit system;
+        inherit pkgs system;
 
         modules = [
           ./system/configuration.nix

@@ -3,6 +3,7 @@
   pkgs,
   lib,
   doom-emacs-src,
+  hyprland,
   hyprland-contrib,
   ...
 }: let
@@ -64,21 +65,22 @@ in {
   nixpkgs.overlays = [
     (
       self: super: {
-        slack = super.slack.overrideAttrs (old: {
-          installPhase =
-            old.installPhase
-            + ''
-              rm $out/bin/slack
-
-              makeWrapper $out/lib/slack/slack $out/bin/slack \
-              --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
-              --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-              --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer %U"
-            '';
-        });
-        waybar = super.waybar.overrideAttrs (oldAttrs: {
-          mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-        });
+        #slack = super.slack.overrideAttrs (old: {
+        #  installPhase =
+        #    old.installPhase
+        #    + ''
+        #      rm $out/bin/slack
+        #
+        #      makeWrapper $out/lib/slack/slack $out/bin/slack \
+        #      --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
+        #      --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
+        #      --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer %U"
+        #    '';
+        #});
+        #waybar = super.waybar.overrideAttrs (oldAttrs: {
+        #  mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+        #});
+        waybar = hyprland.packages.${pkgs.hostPlatform.system}.waybar-hyprland;
       }
     )
   ];
@@ -547,6 +549,35 @@ in {
 
   wayland.windowManager.hyprland.enable = true;
 
+  programs.waybar = {
+    enable = true;
+    package = pkgs.waybar;
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 30;
+        modules-left = [
+          "wlr/workspaces"
+        #  "wlr/taskbar"
+        ];
+        modules-center = [  ];
+        modules-right = [
+          "mpd"
+          "idle_inhibitor"
+          "pulseaudio"
+          "network"
+          "cpu"
+          "memory"
+          "temperature"
+          "keyboard-state"
+          "clock"
+          "tray"
+        ];
+      };
+    };
+  };
+
   programs.zsh = {
     enable = true;
     # autocd = true;
@@ -663,7 +694,7 @@ in {
     #gnomeExtensions.pop-shell
 
     # Work
-    slack
+    unstable.slack
 
     # Fonts
     (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"];})
@@ -679,7 +710,7 @@ in {
     swaylock
     pavucontrol
     # swayidle
-    waybar
+    #waybar
     wl-clipboard
     cliphist
     wf-recorder # screen capture

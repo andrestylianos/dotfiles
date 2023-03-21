@@ -28,7 +28,7 @@
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
-(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 21 :weight 'bold))
+(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 23 :weight 'bold))
 
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -46,6 +46,14 @@
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+(setq evil-kill-on-visual-paste nil)
+
+(setq
+ mode-line-default-help-echo nil
+ show-help-function nil
+ projectile-enable-caching nil
+ doom-localleader-key ","
+ )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -109,18 +117,6 @@
   (projectile-save-project-buffers)
   (cider-interactive-eval "(do (in-ns 'user) (restart-all-system))"))
 
-;; Doom Emacs keybindings
-(map! (:after cider
-              (:localleader
-                    (:map (clojure-mode-map clojurescript-mode-map clojurec-mode-map)
-                          (:prefix ("r" . "repl")
-                                   "r" #'my-cider-reset
-                                   "R" #'my-cider-reset-all
-                                   "s" #'my-cider-start-system)))))
-
-
-;; Portal
-;;
 
 ;; def portal to the dev namespace to allow dereferencing via @dev/portal
 (defun portal.api/open ()
@@ -138,12 +134,31 @@
   (interactive)
   (cider-nrepl-sync-request:eval "(portal.api/close)"))
 
+(use-package! cider
+  :after clojure-mode
+  :config
+  (setq cider-show-error-buffer t ;'only-in-repl
+       ; cider-font-lock-dynamically nil ; use lsp semantic tokens
+        cider-eldoc-display-for-symbol-at-point nil ; use lsp
+        cider-prompt-for-symbol nil
+        cider-use-xref nil) ; use lsp
+  (set-lookup-handlers! '(cider-mode cider-repl-mode) nil) ; use lsp
+  (set-popup-rule! "*cider-test-report*" :side 'right :width 0.4)
+  (set-popup-rule! "^\\*cider-repl" :side 'right :width 0.4 :quit nil :ttl nil)
+  ;; use lsp-completion
+  (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point))))
+
+;; Doom Emacs keybindings
 (map! (:after cider
               (:localleader
                     (:map (clojure-mode-map clojurescript-mode-map clojurec-mode-map)
                           (:prefix ("r" . "repl")
+                                   "r" #'my-cider-reset
+                                   "R" #'my-cider-reset-all
+                                   "s" #'my-cider-start-system
                                    "p" #'portal.api/open
                                    "w" #'portal.api/clear)))))
+
 
 ;; PACKAGE CONFIGURATIONS
 (use-package! evil-cleverparens
@@ -156,6 +171,16 @@
 
 (use-package! aggressive-indent
   :hook (clojure-mode . aggressive-indent-mode))
+
+(use-package! lsp-nix
+  :ensure lsp-mode
+  :after (lsp-mode)
+  :demand t
+  :custom (lsp-nix-nil-formatter ["alejandra"]))
+
+(use-package! nix-mode
+  :ensure t
+  :hook (nix-mode . lsp-deferred))
 
 (add-hook 'clojure-mode-hook (lambda () (define-clojure-indent
   ;; Fulcro

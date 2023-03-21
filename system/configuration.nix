@@ -97,6 +97,10 @@
 
   programs.zsh.enable = true;
 
+  programs.steam = {
+    enable = true;
+  };
+
   services.emacs = {
     enable = true;
     package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
@@ -143,8 +147,8 @@
     #gnome.gnome-tweaks
     # firefox
     ## Hyprland
-    qt5.qtwayland
-    qt6.qtwayland
+    unstable.qt5.qtwayland
+    unstable.qt6.qtwayland
     libsForQt5.polkit-kde-agent
     plasma5Packages.ksshaskpass
     plasma5Packages.kwallet
