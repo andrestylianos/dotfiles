@@ -5,14 +5,12 @@
   doom-emacs-src,
   hyprland,
   hyprland-contrib,
+  emacs-overlay,
   ...
 }: let
   my-doom-emacs = let
     emacsPkg = with pkgs;
-      (emacsPackagesFor (emacs.override {
-        nativeComp = true;
-        withPgtk = true;
-      }))
+      (emacsPackagesFor emacs-overlay.packages.${pkgs.hostPlatform.system}.emacsPgtk)
       .emacsWithPackages (ps: with ps; [vterm all-the-icons]);
     pathDeps = with pkgs; [
       #python3
@@ -111,21 +109,6 @@ in {
     };
 
     file = {
-      ".emacs-profiles.el".text = ''
-        (("default" . ((user-emacs-directory . "${config.xdg.configHome}/my-emacs")))
-         ("doom" . ((user-emacs-directory . "${config.xdg.configHome}/doom-emacs")
-                    (env . (("DOOMDIR" . "${config.home.sessionVariables.DOOMDIR}")
-                            ("DOOMLOCALDIR" . "${config.home.sessionVariables.DOOMLOCALDIR}"))))))
-      '';
-      ".emacs-profile".text = "doom";
-
-      ".emacs.d".source = pkgs.fetchFromGitHub {
-        owner = "plexus";
-        repo = "chemacs2";
-        rev = "c2d700b784c793cc82131ef86323801b8d6e67bb";
-        sha256 = "/WtacZPr45lurS0hv+W8UGzsXY3RujkU5oGGGqjqG0Q=";
-      };
-
       ".m2/settings.xml".source = ../../config/.m2/settings.xml;
       ".datomic/dev-local.edn".source = ../../config/.datomic/dev-local.edn;
     };
@@ -731,7 +714,7 @@ in {
     unstable.slack
 
     # Fonts
-    (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"];})
+    (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono" "Iosevka"];})
 
     # Compression
     atool

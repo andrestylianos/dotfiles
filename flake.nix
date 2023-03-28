@@ -23,6 +23,12 @@
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+      };
+    };
   };
 
   outputs = {
@@ -33,8 +39,9 @@
     hyprland,
     nixpkgs-unstable,
     hyprland-contrib,
+    emacs-overlay,
     ...
-  }: let
+  }@inputs: let
     system = "x86_64-linux";
 
     overlay-unstable = final: prev: {
@@ -70,6 +77,7 @@
           doom-emacs-src = doom-emacs-src;
           hyprland = hyprland;
           hyprland-contrib = hyprland-contrib;
+          emacs-overlay = emacs-overlay;
         };
       };
     };
@@ -82,6 +90,8 @@
 
           hyprland.nixosModules.default
         ];
+
+        specialArgs = { inherit inputs; };
       };
     };
   };
