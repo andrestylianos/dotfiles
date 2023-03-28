@@ -136,8 +136,14 @@
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
 
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    substituters = [
+      "https://hyprland.cachix.org"
+      "https://andrestylianos.cachix.org"
+    ];
+    trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "andrestylianos.cachix.org-1:KtVrGgFYfnzc/dVVx8Zn7RPLVsqwWzJ3NNfMllbXXEg="
+    ];
   };
 
   # List packages installed in system profile. To search, run:

@@ -592,22 +592,20 @@ in {
         temperature = {
           critical-threshold = 80;
           format = "{temperatureC}°C {icon}";
-          format-icons =
-            [
-              ""
-              ""
-              ""
-            ];
+          format-icons = [
+            ""
+            ""
+            ""
+          ];
         };
 
         idle_inhibitor = {
           format = "{icon}";
           format-icons = {
-            activated =  "";
+            activated = "";
             deactivated = "";
           };
         };
-
       };
     };
   };
@@ -703,8 +701,8 @@ in {
     my-doom-emacs
     pdfarranger
     kwalletcli
-	discord
-	obsidian
+    discord
+    obsidian
 
     ripgrep
     fuzzel
