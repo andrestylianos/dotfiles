@@ -703,6 +703,8 @@ in {
     my-doom-emacs
     pdfarranger
     kwalletcli
+	discord
+	obsidian
 
     ripgrep
     fuzzel
