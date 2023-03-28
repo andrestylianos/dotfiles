@@ -15,21 +15,17 @@ in {
        # scale apps
        exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
-#       exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-#       exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-
-    exec-once = ${pkgs.kwallet-pam}/libexec/pam_kwallet_init
+       exec-once = ${pkgs.kwallet-pam}/libexec/pam_kwallet_init
 
        exec-once = wl-paste --watch cliphist store
 
-       exec-once = eww open bar
-       # exec-once = waybar
+       exec-once = systemctl --user start waybar
 
        misc {
          # enable Variable Frame Rate
          vfr = true
          # disable auto polling for config file changes
-         disable_autoreload = true
+         disable_autoreload = false
          focus_on_activate = true
        }
 
@@ -164,18 +160,13 @@ in {
 
        # volume
        bindle = , XF86AudioRaiseVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%+
-       binde = , XF86AudioRaiseVolume, exec, ${homeDir}/.config/eww/scripts/volume osd
        bindle = , XF86AudioLowerVolume, exec, wpctl set-volume -l "1.0" @DEFAULT_AUDIO_SINK@ 6%-
-       binde = , XF86AudioLowerVolume, exec, ${homeDir}/.config/eww/scripts/volume osd
        bindl = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-       bind = , XF86AudioMute, exec, ${homeDir}/.config/eww/scripts/volume osd
        bindl = , XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
        # backlight
        bindle = , XF86MonBrightnessUp, exec, light -A 5
-       binde = , XF86MonBrightnessUp, exec, ${homeDir}/.config/eww/scripts/brightness osd
        bindle = , XF86MonBrightnessDown, exec, light -U 5
-       binde = , XF86MonBrightnessDown, exec, ${homeDir}/.config/eww/scripts/brightness osd
 
        # screenshot
        # stop animations while screenshotting; makes black border go away

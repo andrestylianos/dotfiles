@@ -250,16 +250,6 @@ in {
     #nix-direnv.enableFlakes = true;
   };
 
-  programs.eww-hyprland = {
-    enable = true;
-
-    # default package
-    package = pkgs.eww-wayland;
-
-    # set to true to reload on change
-    autoReload = true;
-  };
-
   programs.git = {
     enable = true;
     userName = "André Stylianos Ramos";
@@ -552,6 +542,10 @@ in {
   programs.waybar = {
     enable = true;
     package = pkgs.waybar;
+    systemd = {
+      enable = true;
+      target = "hyprland-session.target";
+    };
     settings = {
       mainBar = {
         layer = "top";
@@ -559,9 +553,12 @@ in {
         height = 30;
         modules-left = [
           "wlr/workspaces"
-        #  "wlr/taskbar"
+          #  "wlr/taskbar"
         ];
-        modules-center = [  ];
+        modules-center = [
+          "hyprland/window"
+          "hyprland/submap"
+        ];
         modules-right = [
           "mpd"
           "idle_inhibitor"
@@ -574,6 +571,43 @@ in {
           "clock"
           "tray"
         ];
+
+        "wlr/workspaces" = {
+          all-outputs = true;
+          on-click = "activate";
+        };
+
+        "hyprland/submap" = {
+          max-length = 8;
+        };
+
+        cpu = {
+          format = "{usage}% ";
+        };
+
+        memory = {
+          format = "{}% ";
+        };
+
+        temperature = {
+          critical-threshold = 80;
+          format = "{temperatureC}°C {icon}";
+          format-icons =
+            [
+              ""
+              ""
+              ""
+            ];
+        };
+
+        idle_inhibitor = {
+          format = "{icon}";
+          format-icons = {
+            activated =  "";
+            deactivated = "";
+          };
+        };
+
       };
     };
   };

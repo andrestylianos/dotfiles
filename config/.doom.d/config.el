@@ -137,27 +137,25 @@
 (use-package! cider
   :after clojure-mode
   :config
-  (setq cider-show-error-buffer t ;'only-in-repl
-       ; cider-font-lock-dynamically nil ; use lsp semantic tokens
-        cider-eldoc-display-for-symbol-at-point nil ; use lsp
-        cider-prompt-for-symbol nil
-        cider-use-xref nil) ; use lsp
-  (set-lookup-handlers! '(cider-mode cider-repl-mode) nil) ; use lsp
-  (set-popup-rule! "*cider-test-report*" :side 'right :width 0.4)
-  (set-popup-rule! "^\\*cider-repl" :side 'right :width 0.4 :quit nil :ttl nil)
-  ;; use lsp-completion
-  (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point))))
+  (setq ;cider-show-error-buffer t ;'only-in-repl
+        cider-prompt-for-symbol nil)
+  (set-popup-rule! "*cider-test-report*" :side 'right :width 0.4 :slot 3 :quit 'current)
+  (set-popup-rule! "*cider-error*" :side 'right :width 0.4 :slot 2 :quit t)
+  (set-popup-rule! "*cider-result*" :side 'right :width 0.4 :slot 1 :quit t)
+  (set-popup-rule! "^\\*cider-repl" :side 'right :width 0.4 :slot 0 :quit nil :ttl nil))
 
-;; Doom Emacs keybindings
-(map! (:after cider
-              (:localleader
-                    (:map (clojure-mode-map clojurescript-mode-map clojurec-mode-map)
-                          (:prefix ("r" . "repl")
-                                   "r" #'my-cider-reset
-                                   "R" #'my-cider-reset-all
-                                   "s" #'my-cider-start-system
-                                   "p" #'portal.api/open
-                                   "w" #'portal.api/clear)))))
+(map! :after cider-mode
+      :map cider-mode-map
+      :localleader
+      (:prefix ("r" . "repl")
+               "r" #'my-cider-reset
+               "R" #'my-cider-reset-all
+               "s" #'my-cider-start-system)
+
+      (:prefix ("p" . "print")
+               "o" #'portal.api/open
+               "c" #'portal.api/clear))
+
 
 
 ;; PACKAGE CONFIGURATIONS
