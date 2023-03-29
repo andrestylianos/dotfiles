@@ -103,11 +103,6 @@
     enable = true;
   };
 
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
-  };
-
   # Configure console keymap
   # console.keyMap = "us";
   hardware.bluetooth.enable = true;

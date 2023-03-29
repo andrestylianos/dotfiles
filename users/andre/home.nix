@@ -38,7 +38,10 @@
       postBuild = ''
         wrapProgram $out/bin/emacs \
           --prefix PATH : ${lib.makeBinPath pathDeps} \
-          --set LSP_USE_PLISTS true
+          --set LSP_USE_PLISTS true \
+		  --set DOOMDIR ${config.xdg.configHome}/doom-config \
+		  --set DOOMLOCALDIR ${config.xdg.configHome}/doom-local \
+		  --add-flags "--init-directory ${config.xdg.configHome}/doom-emacs"
         wrapProgram $out/bin/emacsclient \
           --prefix PATH : ${lib.makeBinPath pathDeps} \
           --set LSP_USE_PLISTS true
