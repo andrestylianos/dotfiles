@@ -167,6 +167,7 @@ in {
 
   programs.firefox = {
     enable = true;
+    package = pkgs.firefox-wayland;
     extensions = with pkgs.nur.repos.rycee.firefox-addons; [
       bitwarden
       privacy-badger
