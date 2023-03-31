@@ -41,7 +41,7 @@
     hyprland-contrib,
     emacs-overlay,
     ...
-  }@inputs: let
+  } @ inputs: let
     system = "x86_64-linux";
 
     overlay-unstable = final: prev: {
@@ -91,7 +91,7 @@
           hyprland.nixosModules.default
         ];
 
-        specialArgs = { inherit inputs; };
+        specialArgs = {inherit inputs;};
       };
     };
   };

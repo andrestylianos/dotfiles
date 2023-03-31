@@ -53,7 +53,7 @@
  show-help-function nil
  projectile-enable-caching nil
  doom-localleader-key ","
- )
+ tab-always-indent t)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -138,7 +138,12 @@
   :after clojure-mode
   :config
   (setq ;cider-show-error-buffer t ;'only-in-repl
-        cider-prompt-for-symbol nil)
+        cider-prompt-for-symbol nil
+        clojure-toplevel-inside-comment-form t
+        cider-save-file-on-load t
+        cider-print-fn 'puget
+        cider-repl-buffer-size-limit 100000)
+
   (set-popup-rule! "*cider-test-report*" :side 'right :width 0.4 :slot 3 :quit 'current)
   (set-popup-rule! "*cider-error*" :side 'right :width 0.4 :slot 2 :quit t)
   (set-popup-rule! "*cider-result*" :side 'right :width 0.4 :slot 1 :quit t)
@@ -219,3 +224,24 @@
   (POST 2)
   (GET 2)
   (PUT 2))))
+
+(after! smartparens
+
+  (smartparens-global-strict-mode)
+
+  ;; https://github.com/Fuco1/smartparens/blob/master/smartparens.el#L300
+  (sp-use-smartparens-bindings)
+
+  ;; undo the damage done by
+  ;; https://github.com/hlissner/doom-emacs/blob/develop/modules/config/default/config.el#L97
+  ;; to double-quote autopairing - so we always get matching quotes
+  (let ((unless-list '()))
+    (sp-pair "\"" nil :unless unless-list))
+
+  ;; undo the damage done by
+  ;; https://github.com/hlissner/doom-emacs/blob/develop/modules/config/default/config.el#L107
+  ;; so we get matching parens when point is before a word again
+  (dolist (brace '("(" "{" "["))
+    (sp-pair brace nil
+             :post-handlers '(("||\n[i]" "RET") ("| " "SPC"))
+             :unless '())))
