@@ -115,6 +115,13 @@ in {
       ".m2/settings.xml".source = ../../config/.m2/settings.xml;
       ".datomic/dev-local.edn".source = ../../config/.datomic/dev-local.edn;
     };
+
+    pointerCursor = {
+      gtk.enable = true;
+      package = pkgs.catppuccin-cursors.mochaRed;
+      name = "Catppuccin-Mocha-Red-Cursors";
+      size = 22;
+    };
   };
 
   imports = [
