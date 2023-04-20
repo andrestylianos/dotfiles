@@ -1,16 +1,17 @@
 return {
-  { 
-    "mrjones2014/nvim-ts-rainbow"
+  {
+    "mrjones2014/nvim-ts-rainbow",
   },
   {
-    "nvim-treesitter/playground"
+    "nvim-treesitter/playground",
   },
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      auto_install = false;
+      auto_install = false,
       ensure_installed = {
-        "clojure"
+        "clojure",
+        "nix",
       },
       highlight = {
         additional_vim_regex_highlighting = {
@@ -24,8 +25,8 @@ return {
           keymaps = {
             ["af"] = "@function.outer",
             ["if"] = "@function.inner",
-          }
-        }
+          },
+        },
       },
       rainbow = {
         enable = true,
@@ -34,5 +35,5 @@ return {
         enable = true,
       },
     },
-  }
+  },
 }

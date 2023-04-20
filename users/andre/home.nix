@@ -194,7 +194,7 @@ in {
     extraConfig = ''
       modify_font underline_position +2
       modify_font underline_thickness +1
-      '';
+    '';
   };
 
   programs.neovim = {
@@ -328,15 +328,15 @@ in {
         "fontSize" = 20;
         "fontLigatures" = true;
         "fontFamily" = "Iosevka, Fira Code, Menlo, Monaco, 'Courier New', monospace";
-		#"fontWeight" = "bold";
+        #"fontWeight" = "bold";
         "minimap" = {
           "enabled" = false;
         };
         "accessibilitySupport" = "off";
       };
-	  "search.exclude" = {
-		  "**/.calva/output-window/output.calva-repl" = true;
-	  };
+      "search.exclude" = {
+        "**/.calva/output-window/output.calva-repl" = true;
+      };
       "explorer.excludeGitIgnore" = true;
       "files.trimTrailingWhitespace" = true;
       "extensions.experimental.affinity" = {
@@ -539,6 +539,10 @@ in {
     nil
     nix-prefetch-github
     alejandra
+
+    # lua
+    sumneko-lua-language-server
+    stylua
 
     # Clojure
     clojure-lsp
