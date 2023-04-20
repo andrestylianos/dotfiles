@@ -187,102 +187,22 @@ in {
 
   programs.kitty = {
     enable = true;
+    font = {
+      name = "Iosevka Semibold Nerd Font Complete Mono";
+      size = 12;
+    };
+    extraConfig = ''
+      modify_font underline_position +2
+      modify_font underline_thickness +1
+      '';
   };
 
   programs.neovim = {
     enable = true;
     package = pkgs.unstable.neovim-unwrapped;
-    plugins = with pkgs.unstable.vimPlugins; [
-      {
-        plugin = leap-nvim;
-        config = "lua require('leap').add_default_mappings()";
-      }
-      {
-        plugin = marks-nvim;
-        config = "lua require('marks').setup({})";
-      }
-      {
-        plugin = nvim-surround;
-        config = "lua require('nvim-surround').setup({})";
-      }
-      vim-repeat
-      vim-sexp
-      vim-sexp-mappings-for-regular-people
+    plugins = with pkgs.unstable.nvimPlugins; [
+      pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars
     ];
-    extraConfig = ''
-          let mapleader="\<space>"
-          let maplocalleader=","
-
-          nmap <localleader>eb <Cmd>call VSCodeNotify('calva.loadFile')<CR>
-          nmap <localleader>ed <Cmd>call VSCodeNotify('calva.evaluateCurrentTopLevelForm')<CR>
-          nmap <localleader>ee <Cmd>call VSCodeNotify('calva.evaluateSelection')<CR>
-          nmap <localleader>ef <Cmd>call VSCodeNotify('calva.evaluateEnclosingForm')<CR>
-          nmap <localleader>ei <Cmd>call VSCodeNotify('calva.interruptAllEvaluations')<CR>
-          nmap <localleader>rc <Cmd>call VSCodeNotify('calva.connect')<CR>
-          nmap <localleader>rr <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'r')<CR>
-          nmap <localleader>po <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'p')<CR>
-          nmap <localleader>pc <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'k')<CR>
-          nmap <localleader>pe <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'e')<CR>
-          nmap <localleader>pf <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'f')<CR>
-          nmap <localleader>pd <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'd')<CR>
-          nmap <localleader>px <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'x')<CR>
-          nmap <localleader>pi <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', 'q')<CR>
-          nmap <localleader>p0 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '0')<CR>
-          nmap <localleader>p1 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '1')<CR>
-          nmap <localleader>p2 <Cmd>call VSCodeNotify('calva.runCustomREPLCommand', '2')<CR>
-          xmap gc  <Plug>VSCodeCommentary
-          nmap gc  <Plug>VSCodeCommentary
-          omap gc  <Plug>VSCodeCommentary
-          nmap gcc <Plug>VSCodeCommentaryLine
-
-          highlight OperatorSandwichBuns guifg='#aa91a0' gui=underline ctermfg=172 cterm=underline
-      highlight OperatorSandwichChange guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline
-      highlight OperatorSandwichAdd guibg='#b1fa87' gui=none ctermbg='green' cterm=none
-      highlight OperatorSandwichDelete guibg='#cf5963' gui=none ctermbg='red' cterm=none
-
-          set signcolumn=yes:1
-          set shortmess=atOI " No help Uganda information, and overwrite read messages to avoid PRESS ENTER prompts
-      set ignorecase     " Case insensitive search
-      set smartcase      " ... but case sensitive when uc present
-      set scrolljump=5   " Line to scroll when cursor leaves screen
-      set scrolloff=3    " Minumum lines to keep above and below cursor
-      set nowrap         " Do not wrap long lines
-      set shiftwidth=4   " Use indents of 4 spaces
-      set tabstop=4      " An indentation every four columns
-      set softtabstop=4  " Let backspace delete indent
-      set splitright     " Puts new vsplit windows to the right of the current
-      set splitbelow     " Puts new split windows to the bottom of the current
-      set mousehide      " Hide the mouse cursor while typing
-      set hidden         " Allow buffer switching without saving
-      set t_Co=256       " Use 256 colors
-      set ruler          " Show the ruler
-      set showcmd        " Show partial commands in status line and Selected characters/lines in visual mode
-      set showmode       " Show current mode in command-line
-      set showmatch      " Show matching brackets/parentthesis
-      set matchtime=5    " Show matching time
-      set report=0       " Always report changed lines
-          set linespace=0    " No extra spaces between rows
-          set pumheight=20   " Avoid the pop up menu occupying the whole screen
-          set fileformats=unix,dos,mac        " Use Unix as the standard file type
-          set number                  " Line numbers on
-
-          set whichwrap+=<,>,h,l  " Allow backspace and cursor keys to cross line boundaries
-
-          set termencoding=utf-8
-          set fileencoding=utf-8
-          set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
-
-          set wildignore+=*swp,*.class,*.pyc,*.png,*.jpg,*.gif,*.zip
-          set wildignore+=*/tmp/*,*.o,*.obj,*.so     " Unix
-          set wildignore+=*\\tmp\\*,*.exe            " Windows
-
-          set clipboard=unnamedplus,unnamed
-
-          set undofile             " Persistent undo
-          set undolevels=1000      " Maximum number of changes that can be undone
-          set undoreload=10000
-
-    '';
   };
 
   programs.obs-studio = {
@@ -397,7 +317,7 @@ in {
       }
     ];
     userSettings = {
-      "workbench.colorTheme" = "Dracula";
+      "workbench.colorTheme" = "Default Dark+ Experimental";
       "workbench.editor.highlightModifiedTabs" = true;
       "window.zoomLevel" = -2;
       "editor" = {
@@ -405,14 +325,18 @@ in {
           "bracketPairs" = true;
           "bracketPairsHorizontal" = true;
         };
-        "fontSize" = 18;
+        "fontSize" = 20;
         "fontLigatures" = true;
-        "fontFamily" = "Fira Code, Menlo, Monaco, 'Courier New', monospace";
+        "fontFamily" = "Iosevka, Fira Code, Menlo, Monaco, 'Courier New', monospace";
+		#"fontWeight" = "bold";
         "minimap" = {
           "enabled" = false;
         };
         "accessibilitySupport" = "off";
       };
+	  "search.exclude" = {
+		  "**/.calva/output-window/output.calva-repl" = true;
+	  };
       "explorer.excludeGitIgnore" = true;
       "files.trimTrailingWhitespace" = true;
       "extensions.experimental.affinity" = {
@@ -702,6 +626,11 @@ in {
 
       "calva/config.edn" = {
         source = ../../config/calva/config.edn;
+      };
+
+      "nvim" = {
+        source = ../../config/nvim;
+        recursive = true;
       };
 
       "clojure/deps.edn".source = ../../config/.clojure/deps.edn;
