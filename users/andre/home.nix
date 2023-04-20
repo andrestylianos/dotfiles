@@ -120,7 +120,7 @@ in {
       gtk.enable = true;
       package = pkgs.catppuccin-cursors.mochaRed;
       name = "Catppuccin-Mocha-Red-Cursors";
-      size = 22;
+      size = 24;
     };
   };
 
