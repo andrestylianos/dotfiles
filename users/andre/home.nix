@@ -554,6 +554,10 @@ in {
     sumneko-lua-language-server
     stylua
 
+    #neovim
+    lazygit
+    xclip
+
     # Clojure
     clojure-lsp
     # KDE
