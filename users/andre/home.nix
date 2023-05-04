@@ -140,6 +140,16 @@ in {
     enable = true;
   };
 
+  programs.chromium = {
+    enable = true;
+    extensions = [
+    { 
+      id = "dcpihecpambacapedldabdbpakmachpb";
+      updateUrl = "https://djblue.github.io/portal/";
+    }
+    ];
+    };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
