@@ -1,8 +1,7 @@
-local M = { 
+local M = {
   "Olical/conjure",
   ft = { "clojure", "lua" },
-  keys = {
-  },
+  keys = {},
 }
 
 M.config = function()
@@ -43,6 +42,9 @@ M.config = function()
     return conjure_eval(("(tap> " .. form .. ")"))
   end
 
+  vim.g["conjure#client#clojure#nrepl#mapping#refresh_all"] = false
+  vim.g["conjure#client#clojure#nrepl#mapping#refresh_changed"] = false
+
   portal_cmds = {
     open = conjure_eval_fn([[
     (do (ns dev)
@@ -62,6 +64,15 @@ M.config = function()
     start_system = conjure_eval_fn([[
     (user/start-system)
   ]]),
+    start_client = conjure_eval_fn([[
+    (user/start-client)
+  ]]),
+    restart_system = conjure_eval_fn([[
+    (user/restart-system)
+    ]]),
+    restart_all_system = conjure_eval_fn([[
+    (user/restart-all-system)
+    ]]),
   }
 
   local wk = require("which-key")
@@ -70,19 +81,21 @@ M.config = function()
       name = "portal",
       cond = vim.bo.filetype == "clojure",
       o = { portal_cmds.open, "Open Portal" },
-      e = { portal_cmds.last_exception, "Tap last_exception" },
+      x = { portal_cmds.last_exception, "Tap last_exception" },
       w = { portal_cmds.tap_word, "Tap word" },
+      e = { portal_cmds.tap_form, "Tap form" },
       f = { portal_cmds.tap_form, "Tap form" },
       r = { portal_cmds.tap_root_form, "Tap root form" },
-
     },
     r = {
       name = "REPL",
       cond = vim.bo.filetype == "clojure",
-      c = { daitaas_cmds.start_system, "Start System"},
+      s = { daitaas_cmds.start_system, "Start System" },
+      S = { daitaas_cmds.start_client, "Start Client" },
+      r = { daitaas_cmds.restart_system, "Restart System" },
+      R = { daitaas_cmds.restart_all_system, "Restart All System" },
     },
   }, { prefix = "<localleader>" })
-
 end
 
 return M
