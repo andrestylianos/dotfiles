@@ -103,6 +103,8 @@
     enable = true;
   };
 
+  services.tailscale.enable = true;
+
   # Configure console keymap
   # console.keyMap = "us";
   hardware.bluetooth.enable = true;
@@ -291,6 +293,27 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  #
+  networking.firewall = { 
+    enable = true;
+    checkReversePath = "loose";
+
+    trustedInterfaces = [ config.services.tailscale.interfaceName ];
+    allowedTCPPorts = [
+      7860 # stable-diffusion
+      config.services.tailscale.port
+    ];
+    allowedTCPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];
+    allowedUDPPorts = [
+      7860 # stable-diffusion
+      config.services.tailscale.port
+    ];
+    allowedUDPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];  
+  };  
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

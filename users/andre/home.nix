@@ -497,6 +497,8 @@ in {
   };
 
   services.playerctld.enable = true;
+  services.kdeconnect.enable = true;
+
   services.emacs = {
     enable = true;
     package = my-doom-emacs;
@@ -545,6 +547,7 @@ in {
 
     gnome.nautilus
 
+    unstable.flyctl
     # Nix
     nil
     nix-prefetch-github
