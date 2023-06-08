@@ -238,7 +238,6 @@ in {
     extensions = with pkgs.unstable.vscode-extensions;
       [
         asvetliakov.vscode-neovim
-        betterthantomorrow.calva
         dracula-theme.theme-dracula
         mkhl.direnv
       ]
@@ -256,74 +255,6 @@ in {
           sha256 = "yC4ybThMFA2ncGhp8BYD7IrwYiDU3226hewsRvJYKy4=";
         }
       ];
-    keybindings = [
-      {
-        command = "vscode-neovim.send";
-        key = "shift+.";
-        when = "editorTextFocus && neovim.mode != insert";
-        args = ">";
-      }
-      {
-        command = "vscode-neovim.send";
-        key = "shift+,";
-        when = "editorTextFocus && neovim.mode != insert";
-        args = "<lt>";
-      }
-      {
-        command = "paredit.raiseSexp";
-        key = "alt+r";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.spliceSexp";
-        key = "alt+shift+2";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.splitSexp";
-        key = "alt+s";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.joinSexp";
-        key = "alt+j";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.transpose";
-        key = "alt+t";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.wrapAroundParens";
-        key = "alt+shift+9";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.wrapAroundSquare";
-        key = "alt+[";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.wrapAroundCurly";
-        key = "alt+shift+[";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "paredit.wrapAroundQuote";
-        key = "alt+shift+'";
-        when = "editorTextFocus && neovim.mode != insert";
-      }
-      {
-        command = "-calva.clearInlineResults";
-        key = "escape";
-      }
-      {
-        key = "shift+escape";
-        command = "calva.clearInlineResults";
-        when = "editorTextFocus && !editorHasMultipleSelections && !editorReadOnly && !hasOtherSuggestions && !suggestWidgetVisible && editorLangId == 'clojure'";
-      }
-    ];
     userSettings = {
       "workbench.colorTheme" = "Default Dark+ Experimental";
       "workbench.editor.highlightModifiedTabs" = true;
@@ -342,9 +273,6 @@ in {
         };
         "accessibilitySupport" = "off";
       };
-      "search.exclude" = {
-        "**/.calva/output-window/output.calva-repl" = true;
-      };
       "explorer.excludeGitIgnore" = true;
       "files.trimTrailingWhitespace" = true;
       "extensions.experimental.affinity" = {
@@ -360,9 +288,6 @@ in {
         };
       };
       "extensions.ignoreRecommendations" = true;
-      "calva.clojureLspPath" = "${pkgs.clojure-lsp}/bin/clojure-lsp";
-      "calva.paredit.defaultKeyMap" = "none";
-      "calva.showCalvaSaysOnStart" = false;
       "vscode-neovim.neovimExecutablePaths.linux" = "${config.programs.neovim.finalPackage.outPath}/bin/nvim";
     };
   };
@@ -641,10 +566,6 @@ in {
             ${config.xdg.configHome}/doom-emacs/bin/doom --force sync -u
           fi
         ''}";
-      };
-
-      "calva/config.edn" = {
-        source = ../../config/calva/config.edn;
       };
 
       "nvim" = {
