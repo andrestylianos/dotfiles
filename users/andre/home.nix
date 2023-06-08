@@ -112,8 +112,6 @@ in {
     };
 
     file = {
-      ".m2/settings.xml".source = ../../config/.m2/settings.xml;
-      ".datomic/dev-local.edn".source = ../../config/.datomic/dev-local.edn;
     };
 
     pointerCursor = {

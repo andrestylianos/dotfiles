@@ -71,21 +71,6 @@ M.config = function()
     tap_root_form = tap_root_form,
   }
 
-  local daitaas_cmds = {
-    start_system = conjure_eval_fn([[
-    (user/start-system)
-  ]]),
-    start_client = conjure_eval_fn([[
-    (user/start-client)
-  ]]),
-    restart_system = conjure_eval_fn([[
-    (user/restart-system)
-    ]]),
-    restart_all_system = conjure_eval_fn([[
-    (user/restart-all-system)
-    ]]),
-  }
-
   local wk = require("which-key")
   wk.register({
     p = {
@@ -97,14 +82,6 @@ M.config = function()
       e = { portal_cmds.tap_form, "Tap form" },
       f = { portal_cmds.tap_form, "Tap form" },
       r = { portal_cmds.tap_root_form, "Tap root form" },
-    },
-    r = {
-      name = "REPL",
-      cond = vim.bo.filetype == "clojure",
-      s = { daitaas_cmds.start_system, "Start System" },
-      S = { daitaas_cmds.start_client, "Start Client" },
-      r = { daitaas_cmds.restart_system, "Restart System" },
-      R = { daitaas_cmds.restart_all_system, "Restart All System" },
     },
     n = {
       name = "Notebook",
