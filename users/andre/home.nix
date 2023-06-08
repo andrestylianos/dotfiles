@@ -198,8 +198,8 @@ in {
   programs.kitty = {
     enable = true;
     font = {
-      name = "Iosevka Semibold Nerd Font Complete Mono";
-      size = 12;
+      name = "JetBrains Mono Regular Nerd Font Complete";
+      size = 11;
     };
     extraConfig = ''
       modify_font underline_position +2
@@ -571,7 +571,7 @@ in {
     unstable.slack
 
     # Fonts
-    (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono" "Iosevka"];})
+    (pkgs.nerdfonts.override {fonts = ["FiraCode" "DroidSansMono" "Iosevka" "JetBrainsMono"];})
 
     # Compression
     atool
