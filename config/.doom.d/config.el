@@ -92,6 +92,29 @@
 (setq  cider-refresh-before-fn "integrant.repl/suspend")
 (setq  cider-refresh-after-fn "integrant.repl/resume")
 
+(rx-define my-clojure-defining-macro-forms
+  (or (seq ">def" (optional "n"))
+      "defsc"
+      "defmutation"
+      "defrouter"
+      "defresolver"
+      "defstyled"
+      "defpage"
+      "deffragment"))
+
+(defun my-defining-forms-font-lock ()
+  (font-lock-add-keywords
+   nil
+   `((,(rx "("
+           (* (syntax whitespace))
+           (group my-clojure-defining-macro-forms)
+           (+ (syntax whitespace))
+           (group (+ (or (syntax word) (syntax symbol)))))
+      (1 font-lock-keyword-face)
+      (2 font-lock-function-name-face)))))
+
+(add-hook 'clojure-mode-hook #'my-defining-forms-font-lock)
+
 (defun my-kill-cider-repls ()
   (interactive)
   (kill-matching-buffers my-cider-repl-name-rx nil t))
@@ -158,6 +181,8 @@
                "s" #'my-cider-start-system)
 
       (:prefix ("p" . "print")
+               "e" #'cider-tap-last-sexp
+               "E" #'cider-tap-sexp-at-point
                "o" #'portal.api/open
                "c" #'portal.api/clear))
 
