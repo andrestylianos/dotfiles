@@ -18,6 +18,13 @@ M.config = function()
     end
   end
 
+  local function save_and_conjure_eval_fn(form)
+    return function()
+      vim.cmd.write({})
+      return conjure_eval(form)
+    end
+  end
+
   local function conjure_word()
     return extract.word().content
   end
@@ -26,7 +33,6 @@ M.config = function()
     return (extract.form({ ["root?"] = is_root })).content
   end
 
-  local portal_cmds
   local function tap_word()
     local word = conjure_word()
     return conjure_eval(("(tap> " .. word .. ")"))
@@ -45,7 +51,12 @@ M.config = function()
   vim.g["conjure#client#clojure#nrepl#mapping#refresh_all"] = false
   vim.g["conjure#client#clojure#nrepl#mapping#refresh_changed"] = false
 
-  portal_cmds = {
+  local clerk_cmds = {
+    show = save_and_conjure_eval_fn([[
+    (nextjournal.clerk/show! "]] .. vim.fn.expand("%") .. [[")
+    ]]),
+  }
+  local portal_cmds = {
     open = conjure_eval_fn([[
     (do (ns dev)
         ((requiring-resolve 'portal.api/close))
@@ -53,14 +64,14 @@ M.config = function()
                      {:theme :portal.colors/nord}))
         (add-tap (requiring-resolve 'portal.api/submit)))
   ]]),
-    clear = conjure_eval_fn("(portal.api/clear)"),
-    last_exception = conjure_eval_fn("(tap> (Throwable->map *e))"),
+    clear = conjure_eval_fn("[[(portal.api/clear)]]"),
+    last_exception = conjure_eval_fn("[[(tap> (Throwable->map *e))]]"),
     tap_word = tap_word,
     tap_form = tap_form,
     tap_root_form = tap_root_form,
   }
 
-  daitaas_cmds = {
+  local daitaas_cmds = {
     start_system = conjure_eval_fn([[
     (user/start-system)
   ]]),
@@ -94,6 +105,11 @@ M.config = function()
       S = { daitaas_cmds.start_client, "Start Client" },
       r = { daitaas_cmds.restart_system, "Restart System" },
       R = { daitaas_cmds.restart_all_system, "Restart All System" },
+    },
+    n = {
+      name = "Notebook",
+      cond = vim.bo.filetype == "clojure",
+      c = { clerk_cmds.show, "Show Clerk" },
     },
   }, { prefix = "<localleader>" })
 end
