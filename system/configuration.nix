@@ -109,16 +109,16 @@
   # console.keyMap = "us";
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
-  #environment.etc = {
-  #  "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-  #  bluez_monitor.properties = {
-  #    ["bluez5.enable-sbc-xq"] = true,
-  #    ["bluez5.enable-msbc"] = true,
-  #    ["bluez5.enable-hw-volume"] = true,
-  #    ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
-  #                                                  }
-  #'';
-  #};
+  environment.etc = {
+    "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
+    bluez_monitor.properties = {
+      ["bluez5.enable-sbc-xq"] = true,
+      ["bluez5.enable-msbc"] = true,
+      ["bluez5.enable-hw-volume"] = true,
+      ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
+                                                    }
+  '';
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.andre = {
@@ -236,29 +236,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
-    media-session.config.bluez-monitor.rules = [
-      {
-        # Matches all cards
-        matches = [{"device.name" = "~bluez_card.*";}];
-        actions = {
-          "update-props" = {
-            "bluez5.reconnect-profiles" = ["hfp_hf" "hsp_hs" "a2dp_sink"];
-            # mSBC is not expected to work on all headset + adapter combinations.
-            "bluez5.msbc-support" = true;
-            # SBC-XQ is not expected to work on all headset + adapter combinations.
-            "bluez5.sbc-xq-support" = true;
-          };
-        };
-      }
-      {
-        matches = [
-          # Matches all sources
-          {"node.name" = "~bluez_input.*";}
-          # Matches all outputs
-          {"node.name" = "~bluez_output.*";}
-        ];
-      }
-    ];
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
   };
@@ -273,7 +250,7 @@
   virtualisation.podman.enable = true;
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.dockerCompat = true;
-  virtualisation.podman.defaultNetwork.dnsname.enable = true;
+  virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

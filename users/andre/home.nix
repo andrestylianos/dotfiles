@@ -10,7 +10,7 @@
 }: let
   my-doom-emacs = let
     emacsPkg = with pkgs;
-      (emacsPackagesFor emacs-overlay.packages.${pkgs.hostPlatform.system}.emacsPgtk)
+      (emacsPackagesFor emacs-overlay.packages.${pkgs.hostPlatform.system}.emacs-pgtk)
       .emacsWithPackages (ps: with ps; [vterm all-the-icons]);
     pathDeps = with pkgs; [
       #python3
@@ -176,15 +176,15 @@ in {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-wayland;
-    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-      bitwarden
-      privacy-badger
-      ublock-origin
-    ];
     profiles.default = {
       id = 0;
       name = "Default";
       isDefault = true;
+      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+	      bitwarden
+		      privacy-badger
+		      ublock-origin
+      ];
     };
   };
 
@@ -369,6 +369,9 @@ in {
       la = "exa -la";
       ip = "ip --color=auto";
       cat = "bat";
+      nvim = "nix run github:andrestylianos/neovim-flake";
+      nvim-run = "nix run ~/coding/andrestylianos/neovim-flake/";
+      nvim-develop = "nix develop ~/coding/andrestylianos/neovim-flake/";
     };
 
     initExtra = ''
