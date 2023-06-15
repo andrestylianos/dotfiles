@@ -205,14 +205,6 @@ in {
     '';
   };
 
-  programs.neovim = {
-    enable = true;
-    package = pkgs.unstable.neovim-unwrapped;
-    plugins = with pkgs.unstable.nvimPlugins; [
-      pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars
-    ];
-  };
-
   programs.obs-studio = {
     enable = true;
   };
@@ -288,7 +280,6 @@ in {
         };
       };
       "extensions.ignoreRecommendations" = true;
-      "vscode-neovim.neovimExecutablePaths.linux" = "${config.programs.neovim.finalPackage.outPath}/bin/nvim";
     };
   };
 
@@ -566,11 +557,6 @@ in {
             ${config.xdg.configHome}/doom-emacs/bin/doom --force sync -u
           fi
         ''}";
-      };
-
-      "nvim" = {
-        source = ../../config/nvim;
-        recursive = true;
       };
 
       "clojure/deps.edn".source = ../../config/.clojure/deps.edn;
