@@ -81,7 +81,9 @@ in {
        windowrulev2 = pin, title:^(Picture-in-Picture)$
 
        # throw sharing indicators away
+       windowrulev2 = nofullscreenrequest, title:^(Firefox — Sharing Indicator)$
        windowrulev2 = workspace special silent, title:^(Firefox — Sharing Indicator)$
+       windowrulev2 = float, title:^(Firefox — Sharing Indicator)$
        windowrulev2 = workspace special silent, title:^(.*is sharing (your screen|a window)\.)$
 
        windowrulev2 = float, class:^(kwalletd5)$

@@ -10,7 +10,7 @@
 }: let
   my-doom-emacs = let
     emacsPkg = with pkgs;
-      (emacsPackagesFor emacs-overlay.packages.${pkgs.hostPlatform.system}.emacs-pgtk)
+      (emacsPackagesFor emacs-overlay.packages.${pkgs.hostPlatform.system}.emacsPgtk)
       .emacsWithPackages (ps: with ps; [vterm all-the-icons]);
     pathDeps = with pkgs; [
       #python3
@@ -141,12 +141,12 @@ in {
   programs.chromium = {
     enable = true;
     extensions = [
-    { 
-      id = "dcpihecpambacapedldabdbpakmachpb";
-      updateUrl = "https://djblue.github.io/portal/";
-    }
+      {
+        id = "dcpihecpambacapedldabdbpakmachpb";
+        updateUrl = "https://djblue.github.io/portal/";
+      }
     ];
-    };
+  };
 
   programs.direnv = {
     enable = true;
@@ -181,9 +181,9 @@ in {
       name = "Default";
       isDefault = true;
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-	      bitwarden
-		      privacy-badger
-		      ublock-origin
+        bitwarden
+        privacy-badger
+        ublock-origin
       ];
     };
   };
@@ -454,6 +454,7 @@ in {
     kwalletcli
     discord
     obsidian
+    vlc
 
     ripgrep
     fuzzel
