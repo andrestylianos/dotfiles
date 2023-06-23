@@ -132,6 +132,15 @@ in {
 
   services.network-manager-applet.enable = true;
 
+  services.udiskie.enable = true;
+  # workaround because udiskie requires this
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = ["graphical-session-pre.target"];
+    };
+  };
+
   fonts.fontconfig.enable = true;
 
   programs.bat = {
