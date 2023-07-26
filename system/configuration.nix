@@ -223,12 +223,14 @@
   # For 32 bit applications
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.extraPackages = with pkgs; [
-    amdvlk
+    #amdvlk
+    rocm-opencl-icd
+    rocm-opencl-runtime
   ];
   # For 32 bit applications
   # Only available on unstable
   hardware.opengl.extraPackages32 = with pkgs; [
-    driversi686Linux.amdvlk
+    #driversi686Linux.amdvlk
   ];
 
   # Remove sound.enable or turn it off if you had it set previously, it seems to cause conflicts with pipewire
