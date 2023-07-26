@@ -192,6 +192,7 @@ in {
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         bitwarden
         privacy-badger
+        proton-pass
         ublock-origin
       ];
     };
