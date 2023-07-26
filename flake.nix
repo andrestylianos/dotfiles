@@ -86,7 +86,7 @@
         inherit pkgs system;
 
         modules = [
-          ./system/configuration.nix
+          ./hosts/uruk/configuration.nix
 
           hyprland.nixosModules.default
         ];
