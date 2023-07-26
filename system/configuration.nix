@@ -186,12 +186,19 @@
   #  };
 
   security = {
+    pam.u2f = {
+      enable = true;
+      cue = true;
+    };
     pam.services = {
       login.enableKwallet = true;
       gdm.enableKwallet = true;
       kdm.enableKwallet = true;
       lightdm.enableKwallet = true;
       sddm.enableKwallet = true;
+      login.u2fAuth = true;
+      sudo.u2fAuth = true;
+      polkit-1.u2fAuth = true;
 
       swaylock = {
         text = "auth include login";
