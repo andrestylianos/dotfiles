@@ -63,29 +63,6 @@ in {
   #  };
   #};
 
-  nixpkgs.overlays = [
-    (
-      self: super: {
-        #slack = super.slack.overrideAttrs (old: {
-        #  installPhase =
-        #    old.installPhase
-        #    + ''
-        #      rm $out/bin/slack
-        #
-        #      makeWrapper $out/lib/slack/slack $out/bin/slack \
-        #      --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
-        #      --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-        #      --add-flags "--ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer %U"
-        #    '';
-        #});
-        #waybar = super.waybar.overrideAttrs (oldAttrs: {
-        #  mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-        #});
-        waybar = hyprland.packages.${pkgs.hostPlatform.system}.waybar-hyprland;
-      }
-    )
-  ];
-
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
@@ -125,6 +102,7 @@ in {
   imports = [
     ./hyprland/config.nix
     ./shell/bin.nix
+    ../../nixos/configuration.nix
   ];
 
   # Bluetooth
