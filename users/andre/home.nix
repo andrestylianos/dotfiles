@@ -2,15 +2,12 @@
   config,
   pkgs,
   lib,
-  doom-emacs-src,
-  hyprland,
-  hyprland-contrib,
-  emacs-overlay,
+  inputs,
   ...
 }: let
   my-doom-emacs = let
     emacsPkg = with pkgs;
-      (emacsPackagesFor emacs-overlay.packages.${pkgs.hostPlatform.system}.emacsPgtk)
+      (emacsPackagesFor inputs.emacs-overlay.packages.${pkgs.hostPlatform.system}.emacsPgtk)
       .emacsWithPackages (ps: with ps; [vterm all-the-icons]);
     pathDeps = with pkgs; [
       #python3
@@ -504,7 +501,7 @@ in {
     xwayland # compatibility layer with XOrg for wayland
     grim # screenshot functionality
     slurp # screenshot functionality
-    hyprland-contrib.packages.${pkgs.hostPlatform.system}.grimblast
+    inputs.hyprland-contrib.packages.${pkgs.hostPlatform.system}.grimblast
     playerctl
     #
     ## eww-hyprland
@@ -537,7 +534,7 @@ in {
         ''}";
       };
       "doom-emacs" = {
-        source = doom-emacs-src;
+        source = inputs.doom-emacs-src;
         onChange = "${pkgs.writeShellScript "doom-change" ''
           export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
           export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"

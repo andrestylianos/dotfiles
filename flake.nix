@@ -74,10 +74,7 @@
           hyprland.homeManagerModules.default
         ];
         extraSpecialArgs = {
-          doom-emacs-src = doom-emacs-src;
-          hyprland = hyprland;
-          hyprland-contrib = hyprland-contrib;
-          emacs-overlay = emacs-overlay;
+          inherit inputs;
         };
       };
     };
