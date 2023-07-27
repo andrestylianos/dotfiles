@@ -66,26 +66,26 @@
     lib = nixpkgs.lib;
   in {
     formatter.${system} = pkgs.alejandra;
-    homeManagerConfigurations = {
-      andre = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./users/andre/home.nix
-          hyprland.homeManagerModules.default
-        ];
-        extraSpecialArgs = {
-          inherit inputs;
-        };
-      };
-    };
     nixosConfigurations = {
       uruk = lib.nixosSystem {
         inherit pkgs system;
 
         modules = [
           ./hosts/uruk/configuration.nix
-
           hyprland.nixosModules.default
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.andre = import ./users/andre/home.nix;
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+            };
+            home-manager.sharedModules = [
+              hyprland.homeManagerModules.default
+            ];
+          }
         ];
 
         specialArgs = {inherit inputs;};
