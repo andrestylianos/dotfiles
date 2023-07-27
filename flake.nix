@@ -29,6 +29,7 @@
         nixpkgs.follows = "nixpkgs-unstable";
       };
     };
+    my-neovim.url = "github:andrestylianos/neovim-flake";
   };
 
   outputs = {
@@ -40,35 +41,17 @@
     nixpkgs-unstable,
     hyprland-contrib,
     emacs-overlay,
+    my-neovim,
     ...
   } @ inputs: let
     system = "x86_64-linux";
 
-    overlay-unstable = final: prev: {
-      # use this variant if unfree packages are needed:
-      unstable = import nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    };
-
-    pkgs = import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
-      };
-      overlays = [
-        nur.overlay
-        overlay-unstable
-      ];
-    };
-
     lib = nixpkgs.lib;
   in {
-    formatter.${system} = pkgs.alejandra;
+    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
     nixosConfigurations = {
       uruk = lib.nixosSystem {
-        inherit pkgs system;
+        inherit system;
 
         modules = [
           ./hosts/uruk/configuration.nix

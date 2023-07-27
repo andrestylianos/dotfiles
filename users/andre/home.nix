@@ -99,7 +99,6 @@ in {
   imports = [
     ./hyprland/config.nix
     ./shell/bin.nix
-    ../../nixos/configuration.nix
   ];
 
   # Bluetooth
@@ -354,7 +353,6 @@ in {
       la = "exa -la";
       ip = "ip --color=auto";
       cat = "bat";
-      nvim = "nix run github:andrestylianos/neovim-flake";
       nvim-run = "nix run ~/coding/andrestylianos/neovim-flake/";
       nvim-develop = "nix develop ~/coding/andrestylianos/neovim-flake/";
     };
@@ -440,6 +438,8 @@ in {
     discord
     obsidian
     vlc
+
+    neovim
 
     ripgrep
     fuzzel

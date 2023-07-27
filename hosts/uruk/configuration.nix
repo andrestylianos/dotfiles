@@ -11,6 +11,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../nixos/configuration.nix
   ];
 
   # Bootloader.
@@ -131,6 +132,9 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+    inputs.nur.overlay
+  ];
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
