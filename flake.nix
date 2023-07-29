@@ -55,6 +55,7 @@
 
         modules = [
           ./hosts/uruk/configuration.nix
+          ./nixos
           hyprland.nixosModules.default
           home-manager.nixosModules.home-manager
           {
@@ -67,11 +68,14 @@
             };
             home-manager.sharedModules = [
               hyprland.homeManagerModules.default
+              ./home/modules
             ];
           }
         ];
 
-        specialArgs = {inherit inputs;};
+        specialArgs = {
+          inherit inputs;
+        };
       };
     };
   };

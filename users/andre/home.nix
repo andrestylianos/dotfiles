@@ -3,6 +3,7 @@
   pkgs,
   lib,
   inputs,
+  osConfig,
   ...
 }: let
   my-doom-emacs = let
@@ -45,6 +46,7 @@
       '';
     });
 in {
+  inherit (osConfig) hostConfig;
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "andre";
@@ -97,7 +99,6 @@ in {
   };
 
   imports = [
-    ./hyprland/config.nix
     ./shell/bin.nix
   ];
 
@@ -267,79 +268,6 @@ in {
     };
   };
 
-  wayland.windowManager.hyprland.enable = true;
-
-  programs.waybar = {
-    enable = true;
-    package = pkgs.waybar;
-    systemd = {
-      enable = true;
-      target = "hyprland-session.target";
-    };
-    settings = {
-      mainBar = {
-        layer = "top";
-        position = "top";
-        height = 30;
-        modules-left = [
-          "wlr/workspaces"
-          #  "wlr/taskbar"
-        ];
-        modules-center = [
-          "hyprland/window"
-          "hyprland/submap"
-        ];
-        modules-right = [
-          "mpd"
-          "idle_inhibitor"
-          "pulseaudio"
-          "network"
-          "cpu"
-          "memory"
-          "temperature"
-          "keyboard-state"
-          "clock"
-          "tray"
-        ];
-
-        "wlr/workspaces" = {
-          all-outputs = true;
-          on-click = "activate";
-        };
-
-        "hyprland/submap" = {
-          max-length = 8;
-        };
-
-        cpu = {
-          format = "{usage}% ";
-        };
-
-        memory = {
-          format = "{}% ";
-        };
-
-        temperature = {
-          critical-threshold = 80;
-          format = "{temperatureC}°C {icon}";
-          format-icons = [
-            ""
-            ""
-            ""
-          ];
-        };
-
-        idle_inhibitor = {
-          format = "{icon}";
-          format-icons = {
-            activated = "";
-            deactivated = "";
-          };
-        };
-      };
-    };
-  };
-
   programs.zsh = {
     enable = true;
     # autocd = true;
@@ -485,28 +413,6 @@ in {
     unzip
     #tar
     #
-
-    # Sway
-    swaylock
-    pavucontrol
-    # swayidle
-    #waybar
-    wl-clipboard
-    cliphist
-    wf-recorder # screen capture
-    wlogout # nice gui shutdown menu
-    mako
-    wofi
-    xdg_utils
-    xwayland # compatibility layer with XOrg for wayland
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    inputs.hyprland-contrib.packages.${pkgs.hostPlatform.system}.grimblast
-    playerctl
-    #
-    ## eww-hyprland
-    material-design-icons
-    jost
   ];
 
   xdg = {
