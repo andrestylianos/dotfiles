@@ -11,9 +11,10 @@
   ];
   hostConfig = {
     desktop = {
-      hyprland = {
-        enable = true;
-      };
+      hyprland.enable = true;
+    };
+    services = {
+      paperless.enable = true;
     };
     shell = {
       default = "zsh";

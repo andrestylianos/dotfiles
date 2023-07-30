@@ -30,18 +30,17 @@
       };
     };
     my-neovim.url = "github:andrestylianos/neovim-flake";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     nixpkgs,
     home-manager,
-    nur,
-    doom-emacs-src,
     hyprland,
-    nixpkgs-unstable,
-    hyprland-contrib,
-    emacs-overlay,
-    my-neovim,
+    sops-nix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -58,6 +57,7 @@
           ./nixos
           hyprland.nixosModules.default
           home-manager.nixosModules.home-manager
+          sops-nix.nixosModules.sops
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

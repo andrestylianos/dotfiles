@@ -14,6 +14,7 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.sessionVariables.EDITOR = "nvim";
     programs.zsh = {
       enable = true;
       # autocd = true;

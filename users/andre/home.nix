@@ -305,6 +305,9 @@
     unzip
     #tar
     #
+    age
+    sops
+    wl-clipboard
   ];
 
   xdg = {

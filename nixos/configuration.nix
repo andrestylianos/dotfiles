@@ -189,6 +189,7 @@ args @ {
     };
   };
 
+  sops.age.keyFile = "/home/andre/.config/sops/age/keys.txt";
   programs.ssh = {
     startAgent = true;
     askPassword = "${pkgs.plasma5Packages.ksshaskpass.out}/bin/ksshaskpass";
