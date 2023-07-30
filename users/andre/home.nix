@@ -5,48 +5,7 @@
   inputs,
   osConfig,
   ...
-}: let
-  my-doom-emacs = let
-    emacsPkg = with pkgs;
-      (emacsPackagesFor inputs.emacs-overlay.packages.${pkgs.hostPlatform.system}.emacsPgtk)
-      .emacsWithPackages (ps: with ps; [vterm all-the-icons]);
-    pathDeps = with pkgs; [
-      #python3
-      aspell
-      binutils
-      ripgrep
-      fd
-      gnutls
-      zstd
-      shfmt
-      shellcheck
-      sqlite
-      editorconfig-core-c
-      gcc
-      jq
-
-      nixfmt
-    ];
-  in
-    emacsPkg
-    // (pkgs.symlinkJoin {
-      name = "my-doom-emacs";
-      paths = [emacsPkg];
-      nativeBuildInputs = [pkgs.makeWrapper];
-      postBuild = ''
-            wrapProgram $out/bin/emacs \
-              --prefix PATH : ${lib.makeBinPath pathDeps} \
-              --set LSP_USE_PLISTS true \
-        --set DOOMDIR ${config.xdg.configHome}/doom-config \
-        --set DOOMLOCALDIR ${config.xdg.configHome}/doom-local \
-        --add-flags "--init-directory ${config.xdg.configHome}/doom-emacs"
-            wrapProgram $out/bin/emacsclient \
-              --prefix PATH : ${lib.makeBinPath pathDeps} \
-              --set LSP_USE_PLISTS true
-      '';
-    });
-in {
-  inherit (osConfig) hostConfig;
+}: {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "andre";
@@ -73,11 +32,8 @@ in {
   home.stateVersion = "22.11";
 
   home = {
-    sessionPath = ["${config.xdg.configHome}/doom-emacs/bin"];
     sessionVariables = {
       SSH_ASKPASS_REQUIRE = "prefer";
-      DOOMDIR = "${config.xdg.configHome}/doom-config";
-      DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
       NIXOS_OZONE_WL = "1";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       MOZ_ENABLE_WAYLAND = "1";
@@ -268,71 +224,8 @@ in {
     };
   };
 
-  programs.zsh = {
-    enable = true;
-    # autocd = true;
-    dotDir = ".config/zsh";
-    enableAutosuggestions = true;
-    enableCompletion = true;
-    shellAliases = {
-      sl = "exa";
-      ls = "exa";
-      l = "exa -l";
-      la = "exa -la";
-      ip = "ip --color=auto";
-      cat = "bat";
-      nvim-run = "nix run ~/coding/andrestylianos/neovim-flake/";
-      nvim-develop = "nix develop ~/coding/andrestylianos/neovim-flake/";
-    };
-
-    initExtra = ''
-      bindkey '^ ' autosuggest-accept
-      autopair-init
-    '';
-
-    plugins = with pkgs; [
-      {
-        name = "formarks";
-        src = fetchFromGitHub {
-          owner = "wfxr";
-          repo = "formarks";
-          rev = "8abce138218a8e6acd3c8ad2dd52550198625944";
-          sha256 = "1wr4ypv2b6a2w9qsia29mb36xf98zjzhp3bq4ix6r3cmra3xij90";
-        };
-        file = "formarks.plugin.zsh";
-      }
-      {
-        name = "zsh-syntax-highlighting";
-        src = fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-syntax-highlighting";
-          rev = "0.6.0";
-          sha256 = "0zmq66dzasmr5pwribyh4kbkk23jxbpdw4rjxx0i7dx8jjp2lzl4";
-        };
-        file = "zsh-syntax-highlighting.zsh";
-      }
-      {
-        name = "zsh-autopair";
-        src = fetchFromGitHub {
-          owner = "hlissner";
-          repo = "zsh-autopair";
-          rev = "34a8bca0c18fcf3ab1561caef9790abffc1d3d49";
-          sha256 = "1h0vm2dgrmb8i2pvsgis3lshc5b0ad846836m62y8h3rdb3zmpy1";
-        };
-        file = "autopair.zsh";
-      }
-    ];
-  };
-
   services.playerctld.enable = true;
   services.kdeconnect.enable = true;
-
-  services.emacs = {
-    enable = true;
-    package = my-doom-emacs;
-    client.enable = true;
-    socketActivation.enable = true;
-  };
 
   services.gpg-agent = {
     enable = true;
@@ -360,7 +253,6 @@ in {
     flameshot
     fzf
     killall
-    my-doom-emacs
     pdfarranger
     kwalletcli
     discord
@@ -418,42 +310,6 @@ in {
   xdg = {
     enable = true;
     configFile = {
-      "doom-config/config.el" = {
-        source = ../../config/.doom.d/config.el;
-      };
-      "doom-config/init.el" = {
-        source = ../../config/.doom.d/init.el;
-        onChange = "${pkgs.writeShellScript "doom-init-change" ''
-          export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
-          export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"
-          export PATH=$PATH:$HOME/.nix-profile/bin
-          ${config.xdg.configHome}/doom-emacs/bin/doom --force sync
-        ''}";
-      };
-      "doom-config/packages.el" = {
-        source = ../../config/.doom.d/packages.el;
-        onChange = "${pkgs.writeShellScript "doom-packages-change" ''
-          export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
-          export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"
-          export PATH=$PATH:$HOME/.nix-profile/bin
-          ${config.xdg.configHome}/doom-emacs/bin/doom --force sync
-        ''}";
-      };
-      "doom-emacs" = {
-        source = inputs.doom-emacs-src;
-        onChange = "${pkgs.writeShellScript "doom-change" ''
-          export DOOMDIR="${config.home.sessionVariables.DOOMDIR}"
-          export DOOMLOCALDIR="${config.home.sessionVariables.DOOMLOCALDIR}"
-          export PATH=$PATH:$HOME/.nix-profile/bin
-          if [ ! -d "$DOOMLOCALDIR" ]; then
-            ${config.xdg.configHome}/doom-emacs/bin/doom --force install
-          else
-            ${config.xdg.configHome}/doom-emacs/bin/doom --force clean
-            ${config.xdg.configHome}/doom-emacs/bin/doom --force sync -u
-          fi
-        ''}";
-      };
-
       "clojure/deps.edn".source = ../../config/.clojure/deps.edn;
 
       "gtk-4.0/settings.ini".source = ../../config/gtk-4.0/settings.ini;

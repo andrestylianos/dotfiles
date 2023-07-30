@@ -68,6 +68,7 @@
             };
             home-manager.sharedModules = [
               hyprland.homeManagerModules.default
+              ./hosts/uruk/home.nix
               ./home/modules
             ];
           }

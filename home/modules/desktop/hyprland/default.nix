@@ -4,6 +4,7 @@
   lib,
   pkgs,
   inputs,
+  osConfig,
   ...
 }: let
   inherit (lib) mkEnableOption mkIf;
@@ -17,6 +18,12 @@ in {
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = osConfig.hostConfig.desktop.hyprland.enable;
+        message = "Activating hyprland requires hostConfig.desktop.hyprland.enable set to true in configuration.nix";
+      }
+    ];
     home.packages = with pkgs; [
       # Sway
       swaylock

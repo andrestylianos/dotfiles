@@ -6,17 +6,22 @@
   inputs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf;
-  cfg = config.hostConfig.shell.zsh;
+  inherit (lib) mkOption mkIf mkMerge types;
+  cfg = config.hostConfig.shell;
 in {
-  options.hostConfig.shell.zsh = {
-    enable = mkEnableOption "zsh shell";
-  };
-
-  config = mkIf cfg.enable {
-    programs.zsh.enable = true;
-    users.users.andre = {
-      shell = pkgs.zsh;
+  options.hostConfig.shell = {
+    default = mkOption {
+      type = types.enum ["zsh"];
+      description = "default shell";
     };
   };
+
+  config = mkMerge [
+    (mkIf (cfg.default == "zsh") {
+      programs.zsh.enable = true;
+      users.users.andre = {
+        shell = pkgs.zsh;
+      };
+    })
+  ];
 }
