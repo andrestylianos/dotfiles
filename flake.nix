@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.05";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,50 +38,60 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = {
-    nixpkgs,
-    home-manager,
-    hyprland,
-    sops-nix,
-    ...
-  } @ inputs: let
-    system = "x86_64-linux";
+  outputs = inputs @ {...}:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
 
-    lib = nixpkgs.lib;
-  in {
-    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
-    nixosConfigurations = {
-      uruk = lib.nixosSystem {
-        inherit system;
+      flake = {
+        nixosConfigurations = {
+          uruk = inputs.nixpkgs.lib.nixosSystem {
+            modules = [
+              ./hosts/uruk/configuration.nix
+              ./nixos
+              inputs.hyprland.nixosModules.default
+              inputs.home-manager.nixosModules.home-manager
+              inputs.sops-nix.nixosModules.sops
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.andre = import ./users/andre/home.nix;
 
-        modules = [
-          ./hosts/uruk/configuration.nix
-          ./nixos
-          hyprland.nixosModules.default
-          home-manager.nixosModules.home-manager
-          sops-nix.nixosModules.sops
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.andre = import ./users/andre/home.nix;
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                };
+                home-manager.sharedModules = [
+                  inputs.hyprland.homeManagerModules.default
+                  ./hosts/uruk/home.nix
+                  ./home/modules
+                ];
+              }
+            ];
 
-            home-manager.extraSpecialArgs = {
+            specialArgs = {
               inherit inputs;
             };
-            home-manager.sharedModules = [
-              hyprland.homeManagerModules.default
-              ./hosts/uruk/home.nix
-              ./home/modules
-            ];
-          }
-        ];
-
-        specialArgs = {
-          inherit inputs;
+          };
+        };
+        darwinConfigurations."DN2J7HMQ7T" = inputs.nix-darwin.lib.darwinSystem {
+          modules = [
+            # ./hosts/whale-macbook/configuration.nix
+            ./darwin
+          ];
+          specialArgs = {inherit inputs;};
         };
       };
+      perSystem = {
+        pkgs,
+        inputs,
+        ...
+      }: {
+        formatter = pkgs.alejandra;
+      };
     };
-  };
 }

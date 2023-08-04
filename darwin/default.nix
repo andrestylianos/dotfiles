@@ -1,0 +1,5 @@
+args @ {...}: {
+  imports = [
+    ./configuration.nix
+  ];
+}
