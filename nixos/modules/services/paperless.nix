@@ -16,16 +16,16 @@ in {
   config = mkIf cfg.enable {
     services.paperless = {
       enable = true;
+      address = "0.0.0.0";
       passwordFile = "/run/secrets/paperless-password";
       extraConfig = {
         PAPERLESS_OCR_LANGUAGE = "por+eng+spa";
         PAPERLESS_OCR_LANGUAGES = "por";
+        PAPERLESS_FILENAME_FORMAT = "{correspondent}/{document_type}/{created}-{title}-{tag_list}-{asn}";
       };
-      consumptionDirIsPublic = true;
     };
 
-    #users.users.andre.extraGroups = [config.services.paperless.user];
-    # users.groups.paperless.members = ["andre"];
+    users.users.andre.extraGroups = [config.services.paperless.user];
 
     sops.secrets.paperless-password = {
       key = "password";

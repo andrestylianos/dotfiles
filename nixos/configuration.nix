@@ -268,6 +268,7 @@ args @ {
     trustedInterfaces = [config.services.tailscale.interfaceName];
     allowedTCPPorts = [
       7860 # stable-diffusion
+      28981 # Paperless
       config.services.tailscale.port
     ];
     allowedTCPPortRanges = [
@@ -278,6 +279,7 @@ args @ {
     ];
     allowedUDPPorts = [
       7860 # stable-diffusion
+      28981 # Paperless
       config.services.tailscale.port
     ];
     allowedUDPPortRanges = [
