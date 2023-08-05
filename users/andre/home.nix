@@ -308,6 +308,7 @@
     age
     sops
     wl-clipboard
+    tldr
   ];
 
   xdg = {
