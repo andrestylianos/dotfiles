@@ -60,7 +60,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.andre = import ./users/andre/home.nix;
+                home-manager.users.andre = import ./nixos/home.nix;
 
                 home-manager.extraSpecialArgs = {
                   inherit inputs;
@@ -68,7 +68,8 @@
                 home-manager.sharedModules = [
                   inputs.hyprland.homeManagerModules.default
                   ./hosts/uruk/home.nix
-                  ./home/modules
+                  ./home/common/modules
+                  ./home/nixos/modules
                 ];
               }
             ];
@@ -82,6 +83,21 @@
           modules = [
             # ./hosts/whale-macbook/configuration.nix
             ./darwin
+            inputs.home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.andre = import ./darwin/home.nix;
+
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
+              home-manager.sharedModules = [
+                ./hosts/whale-macbook/home.nix
+                ./home/common/modules
+                #./home/darwin/modules
+              ];
+            }
           ];
           specialArgs = {inherit inputs;};
         };

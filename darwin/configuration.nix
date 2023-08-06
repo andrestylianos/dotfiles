@@ -3,6 +3,13 @@ args @ {
   inputs,
   ...
 }: {
+  users.users.andre = {
+    isHidden = "false";
+    name = "andre";
+    home = "/Users/andre";
+    description = "Andre Stylianos Ramos";
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix.settings = {
@@ -27,6 +34,7 @@ args @ {
     interval = {Day = 7;};
     options = "--delete-older-than 7d";
   };
+  nix.nixPath = ["flake:nixpkgs"];
 
   environment.systemPackages = with pkgs; [
     vim
@@ -36,6 +44,7 @@ args @ {
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
 
+  security.pam.enableSudoTouchIdAuth = true;
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
