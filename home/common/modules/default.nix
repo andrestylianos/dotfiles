@@ -1,6 +1,8 @@
 {...}: {
   imports = [
-    ./shell/zsh.nix
+    ./direnv.nix
     ./editor/emacs
+    ./shell/starship.nix
+    ./shell/zsh.nix
   ];
 }

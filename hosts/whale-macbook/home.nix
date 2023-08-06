@@ -6,9 +6,10 @@
   ...
 }: {
   hostConfig = {
+    direnv.enable = true;
     shell = {
-      zsh.enable = true;
       starship.enable = true;
+      zsh.enable = true;
     };
   };
 }
