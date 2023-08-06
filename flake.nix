@@ -53,6 +53,7 @@
           uruk = inputs.nixpkgs.lib.nixosSystem {
             modules = [
               ./hosts/uruk/configuration.nix
+              ./common
               ./nixos
               inputs.hyprland.nixosModules.default
               inputs.home-manager.nixosModules.home-manager
@@ -83,6 +84,7 @@
           modules = [
             # ./hosts/whale-macbook/configuration.nix
             ./darwin
+            ./common
             inputs.home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

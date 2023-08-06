@@ -8,6 +8,7 @@
   hostConfig = {
     shell = {
       zsh.enable = true;
+      starship.enable = true;
     };
   };
 }

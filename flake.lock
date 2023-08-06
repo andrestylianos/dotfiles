@@ -60,6 +60,24 @@
         "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
+        "lastModified": 1688466019,
+        "narHash": "sha256-VeM2akYrBYMsb4W/MmBo1zmaMfgbL4cH3Pu8PGyIwJ0=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "8e8d955c22df93dbe24f19ea04f47a74adbdc5ec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_3": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib_3"
+      },
+      "locked": {
         "lastModified": 1685662779,
         "narHash": "sha256-cKDDciXGpMEjP1n6HlzKinN0H+oLmNpgeCTzYnsA2po=",
         "owner": "hercules-ci",
@@ -190,17 +208,18 @@
     },
     "my-neovim": {
       "inputs": {
+        "flake-parts": "flake-parts_2",
         "neovim": "neovim",
         "nixd": "nixd",
         "nixpkgs": "nixpkgs_2",
         "nvim-lsp-notify": "nvim-lsp-notify"
       },
       "locked": {
-        "lastModified": 1687201851,
-        "narHash": "sha256-HEZ1VAqTOnrQ6tUYTvB4TT9gNDsNv0EYH5/XRcN9LuM=",
+        "lastModified": 1691154073,
+        "narHash": "sha256-qKrLQPk1hya7LtcHuEyl17t87JpAoHLNYNHtWjmMHfA=",
         "owner": "andrestylianos",
         "repo": "neovim-flake",
-        "rev": "4abc56bdad1e17fd0d6564913101dd9142b67152",
+        "rev": "26567059268bd557c0d18de452445c581545fcfd",
         "type": "github"
       },
       "original": {
@@ -257,7 +276,7 @@
     },
     "nixd": {
       "inputs": {
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts_3",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
@@ -309,6 +328,24 @@
       }
     },
     "nixpkgs-lib_2": {
+      "locked": {
+        "dir": "lib",
+        "lastModified": 1688049487,
+        "narHash": "sha256-100g4iaKC9MalDjUW9iN6Jl/OocTDtXdeAj7pEGIRh4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4bc72cae107788bf3f24f30db2e2f685c9298dc9",
+        "type": "github"
+      },
+      "original": {
+        "dir": "lib",
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib_3": {
       "locked": {
         "dir": "lib",
         "lastModified": 1685564631,
