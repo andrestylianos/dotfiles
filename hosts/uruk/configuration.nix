@@ -13,6 +13,9 @@
     desktop = {
       hyprland.enable = true;
     };
+    programs = {
+      _1password.enable = true;
+    };
     services = {
       paperless.enable = true;
     };
