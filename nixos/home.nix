@@ -88,13 +88,6 @@
     ];
   };
 
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-    #nix-direnv.enableFlakes = true;
-  };
-
   programs.git = {
     enable = true;
     userName = "André Stylianos Ramos";
@@ -244,8 +237,6 @@
     obsidian
     vlc
 
-    neovim
-
     ripgrep
     fuzzel
 
@@ -266,7 +257,6 @@
     stylua
 
     #neovim
-    lazygit
     xclip
 
     # Clojure

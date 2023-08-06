@@ -21,7 +21,6 @@
 
   home.packages = with pkgs; [
     exa
-    neovim
     ripgrep
   ];
 

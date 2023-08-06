@@ -11,6 +11,7 @@
     };
     direnv.enable = true;
     editor = {
+      neovim.enable = true;
       emacs.enable = true;
     };
     shell = {
