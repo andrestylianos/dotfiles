@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./cli.nix
     ./direnv.nix
     ./editor/emacs
     ./editor/neovim.nix

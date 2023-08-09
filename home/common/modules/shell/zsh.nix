@@ -14,7 +14,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.sessionVariables.EDITOR = "nvim";
     programs.zsh = {
       enable = true;
       # autocd = true;
@@ -22,14 +21,7 @@ in {
       enableAutosuggestions = true;
       enableCompletion = true;
       shellAliases = {
-        sl = "exa";
-        ls = "exa";
-        l = "exa -l";
-        la = "exa -la";
         ip = "ip --color=auto";
-        cat = "bat";
-        nvim-run = "nix run ~/coding/andrestylianos/neovim-flake/";
-        nvim-develop = "nix develop ~/coding/andrestylianos/neovim-flake/";
       };
 
       initExtra = ''

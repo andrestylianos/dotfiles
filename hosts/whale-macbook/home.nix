@@ -6,6 +6,7 @@
   ...
 }: {
   hostConfig = {
+    cli.enable = true;
     direnv.enable = true;
     editor = {
       neovim.enable = true;

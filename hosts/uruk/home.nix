@@ -6,13 +6,14 @@
   ...
 }: {
   hostConfig = {
+    cli.enable = true;
     desktop = {
       hyprland.enable = true;
     };
     direnv.enable = true;
     editor = {
-      neovim.enable = true;
       emacs.enable = true;
+      neovim.enable = true;
     };
     shell = {
       starship.enable = true;

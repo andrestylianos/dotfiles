@@ -74,10 +74,6 @@
 
   fonts.fontconfig.enable = true;
 
-  programs.bat = {
-    enable = true;
-  };
-
   programs.chromium = {
     enable = true;
     extensions = [
@@ -120,11 +116,6 @@
         ublock-origin
       ];
     };
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
   };
 
   programs.kitty = {
@@ -223,13 +214,10 @@
     bitwarden
     brave
     cachix
-    exa
     git
     git-crypt
     ghostscript
-    fd
     flameshot
-    fzf
     killall
     pdfarranger
     kwalletcli
@@ -237,7 +225,6 @@
     obsidian
     vlc
 
-    ripgrep
     fuzzel
 
     coreutils

@@ -20,8 +20,6 @@
   home.stateVersion = "22.11";
 
   home.packages = with pkgs; [
-    exa
-    ripgrep
   ];
 
   # Let Home Manager install and manage itself.
