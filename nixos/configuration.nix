@@ -152,6 +152,7 @@ args @ {
     ## Docker
     arion
     docker-client
+    unstable.logseq
   ];
 
   #  xdg = {
