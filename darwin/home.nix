@@ -20,7 +20,12 @@
   home.stateVersion = "22.11";
 
   home.packages = with pkgs; [
+    comby
   ];
+
+  home.file.".gnupg/gpg-agent.conf".text = ''
+    pinentry-program ${osConfig.homebrew.brewPrefix}/pinentry-mac
+  '';
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

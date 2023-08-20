@@ -121,6 +121,22 @@
         "type": "github"
       }
     },
+    "flash-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1690011025,
+        "narHash": "sha256-1VisMxCH31Ss+SoMhjPeHUdi0l39JKe/8ErmyeOjh+Y=",
+        "owner": "folke",
+        "repo": "flash.nvim",
+        "rev": "967117690bd677cb7b6a87f0bc0077d2c0be3a27",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "flash.nvim",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -209,17 +225,18 @@
     "my-neovim": {
       "inputs": {
         "flake-parts": "flake-parts_2",
+        "flash-nvim": "flash-nvim",
         "neovim": "neovim",
         "nixd": "nixd",
         "nixpkgs": "nixpkgs_2",
         "nvim-lsp-notify": "nvim-lsp-notify"
       },
       "locked": {
-        "lastModified": 1691154073,
-        "narHash": "sha256-qKrLQPk1hya7LtcHuEyl17t87JpAoHLNYNHtWjmMHfA=",
+        "lastModified": 1692286128,
+        "narHash": "sha256-iARVTv4xQbJlKXMS+0+XcBL7yhLR+oZWf32zRJjmm3w=",
         "owner": "andrestylianos",
         "repo": "neovim-flake",
-        "rev": "26567059268bd557c0d18de452445c581545fcfd",
+        "rev": "b0701a24665c0b9e917f2f5dcc95a40f8fc3032e",
         "type": "github"
       },
       "original": {

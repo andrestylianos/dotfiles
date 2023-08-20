@@ -39,7 +39,25 @@ args @ {
   environment.systemPackages = with pkgs; [
     vim
     ripgrep
+    gnupg
   ];
+
+  homebrew = {
+    enable = true;
+    onActivation.autoUpdate = true;
+    casks = [
+      "altair-graphql-client"
+      "amethyst"
+      "font-jetbrains-mono-nerd-font"
+      "gather"
+      "iterm2"
+      "logseq"
+      "wezterm"
+    ];
+    brews = [
+      "pinentry-mac"
+    ];
+  };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
