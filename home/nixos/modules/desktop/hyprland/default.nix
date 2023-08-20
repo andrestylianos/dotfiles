@@ -7,6 +7,27 @@
   osConfig,
   ...
 }: let
+  apply-hm-env = pkgs.writeShellScript "apply-hm-env" ''
+    ${lib.optionalString (config.home.sessionPath != []) ''
+      export PATH=${builtins.concatStringsSep ":" config.home.sessionPath}:$PATH
+    ''}
+    ${builtins.concatStringsSep "\n" (lib.mapAttrsToList (k: v: ''
+        export ${k}=${toString v}
+      '')
+      config.home.sessionVariables)}
+    ${config.home.sessionVariablesExtra}
+    exec "$@"
+  '';
+
+  # runs processes as systemd transient services
+  run-as-service = pkgs.writeShellScriptBin "run-as-service" ''
+    exec ${pkgs.systemd}/bin/systemd-run \
+      --slice=app-manual.slice \
+      --property=ExitType=cgroup \
+      --user \
+      --wait \
+      bash -lc "exec ${apply-hm-env} $@"
+  '';
   inherit (lib) mkEnableOption mkIf;
   cfg = config.hostConfig.desktop.hyprland;
 in {
@@ -21,6 +42,7 @@ in {
         message = "Activating hyprland requires hostConfig.desktop.hyprland.enable set to true in configuration.nix";
       }
     ];
+
     home.packages = with pkgs; [
       # Sway
       swaylock
@@ -43,6 +65,8 @@ in {
       ## eww-hyprland
       material-design-icons
       jost
+
+      run-as-service
     ];
 
     wayland.windowManager.hyprland.enable = true;

@@ -54,10 +54,6 @@
     };
   };
 
-  imports = [
-    ./shell/bin.nix
-  ];
-
   # Bluetooth
   services.blueman-applet.enable = true;
 
@@ -276,9 +272,9 @@
   xdg = {
     enable = true;
     configFile = {
-      "clojure/deps.edn".source = ../../config/.clojure/deps.edn;
+      "clojure/deps.edn".source = ../config/.clojure/deps.edn;
 
-      "gtk-4.0/settings.ini".source = ../../config/gtk-4.0/settings.ini;
+      "gtk-4.0/settings.ini".source = ../config/gtk-4.0/settings.ini;
     };
   };
 
