@@ -39,12 +39,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-parts.url = "github:hercules-ci/flake-parts";
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
   outputs = inputs @ {...}:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = [
         "x86_64-linux"
+        "aarch64-linux"
         "aarch64-darwin"
       ];
 
@@ -79,6 +81,36 @@
               inherit inputs;
             };
           };
+
+          atlas = inputs.nixpkgs.lib.nixosSystem {
+            modules = [
+              ./hosts/atlas/configuration.nix
+              ./common
+              ./nixos
+              inputs.hyprland.nixosModules.default
+              inputs.home-manager.nixosModules.home-manager
+              inputs.sops-nix.nixosModules.sops
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.andre = import ./nixos/home.nix;
+
+                home-manager.extraSpecialArgs = {
+                  inherit inputs;
+                };
+                home-manager.sharedModules = [
+                  inputs.hyprland.homeManagerModules.default
+                  #./hosts/atlas/home.nix
+                  ./home/common/modules
+                  ./home/nixos/modules
+                ];
+              }
+            ];
+
+            specialArgs = {
+              inherit inputs;
+            };
+          };
         };
         darwinConfigurations."DN2J7HMQ7T" = inputs.nix-darwin.lib.darwinSystem {
           modules = [
@@ -103,6 +135,18 @@
           ];
           specialArgs = {inherit inputs;};
         };
+
+        deploy.nodes.atlas = {
+          hostname = "nixos-8gb-fsn1-1";
+          profiles.system = {
+            user = "root";
+            sshUser = "root";
+            path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos inputs.self.nixosConfigurations.atlas;
+          };
+        };
+
+        # This is highly advised, and will prevent many possible mistakes
+        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks inputs.self.deploy) inputs.deploy-rs.lib;
       };
       perSystem = {
         pkgs,

@@ -1,7 +1,9 @@
 keys:
   - &andre_age age10gnzls7m3mk5nthsvnsrf3z6j40az6nksz08yd6h8uw7vr8a9qas8g6nll
+  - &server_atlas age15xhpu404sp9l5twp9xvx5qq08qdl33dhf2s5c7fejzj4cw6asquqn7x0de
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini|txt)$
     key_groups:
     - age:
       - *andre_age
+      - *server_atlas
