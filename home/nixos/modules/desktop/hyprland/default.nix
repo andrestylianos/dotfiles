@@ -151,7 +151,9 @@ in {
       homeDir = config.home.homeDirectory;
       launcher = "fuzzel";
     in ''
-         $mod = SUPER
+         $mod1 = ALT SHIFT
+         $mod2 = CTRL ALT SHIFT
+         $mod3 = SUPER
 
          monitor = HDMI-A-1,3840x2160@60,0x0,2
       #exec-once=systemctl --user import-environment DISPLAY WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE XDG_CURRENT_DESKTOP
@@ -190,6 +192,8 @@ in {
            gaps_out = 5
            border_size = 2
 
+           layout = master
+
          }
 
          decoration {
@@ -221,6 +225,10 @@ in {
            preserve_split = true
          }
 
+         master {
+           new_is_master = false
+         }
+
          # make Firefox PiP window floating and sticky
          windowrulev2 = float, title:^(Picture-in-Picture)$
          windowrulev2 = pin, title:^(Picture-in-Picture)$
@@ -250,48 +258,49 @@ in {
          windowrulev2 = idleinhibit focus, class:^(mpv|.+exe)$
 
          # mouse movements
-         bindm = $mod, mouse:272, movewindow
-         bindm = $mod, mouse:273, resizewindow
-         bindm = $mod ALT, mouse:272, resizewindow
+         bindm = $mod1, mouse:272, movewindow
+         bindm = $mod1, mouse:273, resizewindow
+         bindm = $mod2, mouse:272, resizewindow
 
          # compositor commands
-         bind = $mod SHIFT, E, exec, pkill Hyprland
-         bind = $mod, Q, killactive,
-         bind = $mod, F, fullscreen,
-         bind = $mod, G, togglegroup,
-         bind = $mod SHIFT, N, changegroupactive, f
-         bind = $mod SHIFT, P, changegroupactive, b
-         bind = $mod, R, togglesplit,
-         bind = $mod, T, togglefloating,
-         bind = $mod, P, pseudo,
-         bind = $mod ALT, ,resizeactive,
-         # toggle "monocle" (no_gaps_when_only)
-         $kw = dwindle:no_gaps_when_only
-         bind = $mod, M, exec, hyprctl keyword $kw $(($(hyprctl getoption $kw -j | jaq -r '.int') ^ 1))
+         bind = $mod3 SHIFT, E, exec, pkill Hyprland
+         bind = $mod3, Q, killactive,
+         bind = $mod1, F, fullscreen,
+         bind = $mod1, G, togglegroup,
+         bind = $mod1, N, changegroupactive, f
+         bind = $mod1, P, changegroupactive, b
+         bind = $mod1, A, layoutmsg, orientationleft
+         bind = $mod1, S, layoutmsg, orientationtop
+         bind = $mod1, D, layoutmsg, orientationcenter
+         bind = $mod1, R, resizeactive,
 
          # utility
          # launcher
-         # bindr = $mod, SUPER_L, exec, pkill .${launcher}-wrapped || run-as-service ${launcher} --show run
-         # bindr = $mod, D, exec, pkill .${launcher}-wrapped || run-as-service ${launcher} --show run
-         bindr = $mod, D, exec, ${launcher} --show run
-         bindr = $mod, V, exec, cliphist list | fuzzel -d | cliphist decode | wl-copy
+         bindr = $mod3, SPACE, exec, ${launcher} --show run
+         bindr = $mod1, V, exec, cliphist list | fuzzel -d | cliphist decode | wl-copy
          # terminal
-         bind = $mod, Return, exec, run-as-service kitty
+         bind = $mod3, Return, exec, run-as-service kitty
          # logout menu
-         bind = $mod, Escape, exec, wlogout -p layer-shell
+         bind = $mod3, Escape, exec, wlogout -p layer-shell
          # lock screen
-         bind = $mod, L, exec, loginctl lock-session
-         # select area to perform OCR on
-         bind = $mod, O, exec, run-as-service wl-ocr
+         bind = $mod3, L, exec, loginctl lock-session
 
          # move focus
-         bind = $mod, left, movefocus, l
-         bind = $mod, right, movefocus, r
-         bind = $mod, up, movefocus, u
-         bind = $mod, down, movefocus, d
+         bind = $mod1, h, movefocus, l
+         bind = $mod1, l, movefocus, r
+         bind = $mod1, k, movefocus, u
+         bind = $mod1, j, movefocus, d
+
+         # move window
+         bind = $mod2, h, movewindow, l
+         bind = $mod2, l, movewindow, r
+         bind = $mod2, k, movewindow, u
+         bind = $mod2, j, movewindow, d
+
+         bind = $mod1, Return, layoutmsg, swapwithmaster master
 
          # window resize
-         bind = $mod, S, submap, resize
+         bind = $mod1, S, submap, resize
 
          submap = resize
          binde = , right, resizeactive, 10 0
@@ -319,14 +328,13 @@ in {
          # screenshot
          # stop animations while screenshotting; makes black border go away
          $screenshotarea = hyprctl keyword animation "fadeOut,0,0,default"; grimblast --notify copysave area; hyprctl keyword animation "fadeOut,1,4,default"
-         bind = , Print, exec, $screenshotarea
-         bind = $mod SHIFT, R, exec, $screenshotarea
+         bind = , Print, exec, grimblast --notify copy area
+         bind = $mod3 SHIFT, 4, exec, grimblast --notify save area
+         bind = $mod3 CTRL SHIFT, 4, exec, grimblast --notify copy area
 
-         bind = CTRL, Print, exec, grimblast --notify --cursor copysave output
-         bind = $mod SHIFT CTRL, R, exec, grimblast --notify --cursor copysave output
-
-         bind = ALT, Print, exec, grimblast --notify --cursor copysave screen
-         bind = $mod SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen
+         bind = CTRL, Print, exec, grimblast --notify --cursor copy output
+         bind = $mod3 SHIFT, 3, exec, grimblast --notify --cursor save output
+         bind = $mod3 CTRL SHIFT, 3, exec, grimblast --notify --cursor copy output
 
          # workspaces
          # binds mod + [shift +] {1..10} to [move to] ws {1..10}
@@ -337,22 +345,22 @@ in {
             in
               builtins.toString (x + 1 - (c * 10));
           in ''
-            bind = $mod, ${ws}, workspace, ${toString (x + 1)}
-            bind = $mod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}
+            bind = $mod1, ${ws}, workspace, ${toString (x + 1)}
+            bind = $mod2, ${ws}, movetoworkspace, ${toString (x + 1)}
           ''
         )
         10)}
 
          # special workspace
-         bind = $mod SHIFT, grave, movetoworkspace, special
-         bind = $mod, grave, togglespecialworkspace, eDP-1
+         bind = $mod2, grave, movetoworkspace, special
+         bind = $mod1, grave, togglespecialworkspace, eDP-1
 
          # cycle workspaces
-         bind = $mod, bracketleft, workspace, m-1
-         bind = $mod, bracketright, workspace, m+1
+         bind = $mod1, bracketleft, workspace, m-1
+         bind = $mod1, bracketright, workspace, m+1
          # cycle monitors
-         bind = $mod SHIFT, braceleft, focusmonitor, l
-         bind = $mod SHIFT, braceright, focusmonitor, r
+         #bind = $mod1 SHIFT, braceleft, focusmonitor, l
+         #bind = $mod1 SHIFT, braceright, focusmonitor, r
     '';
   };
 }

@@ -49,4 +49,24 @@ args @ {
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
+
+  services.keyd = {
+    enable = true;
+    settings = {
+      main = {
+        capslock = "overload(control, esc)";
+        rightalt = "layer(rightalt)";
+        #leftmeta = "layer(meta_mac)";
+      };
+      rightalt = {
+        h = "left";
+        j = "down";
+        k = "up";
+        l = "right";
+      };
+      meta_mac = {
+        space = "M-d";
+      };
+    };
+  };
 }
