@@ -13,6 +13,7 @@
     };
     services = {
       paperless.enable = true;
+      backup.enable = true;
     };
     shell = {
       default = "zsh";

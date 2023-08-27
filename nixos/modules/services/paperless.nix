@@ -33,5 +33,23 @@ in {
       owner = config.services.paperless.user;
       sopsFile = ../../../secrets/paperless.yaml;
     };
+
+    services.restic.backups.paperless = let
+      backupDir = "/var/lib/paperless/backups";
+    in {
+      passwordFile = "/run/secrets/ars-backup-password";
+      timerConfig = {
+        OnCalendar = "daily";
+        Persistent = true;
+      };
+      environmentFile = "/run/secrets/ars-api-key";
+      repository = "s3:https://s3.fr-par.scw.cloud/ars-backup/paperless";
+      initialize = true;
+      extraOptions = ["s3.storage-class=ONEZONE_IA"];
+      paths = [
+        backupDir
+      ];
+      backupPrepareCommand = "mkdir -p ${backupDir} && /var/lib/paperless/paperless-manage document_exporter -f -p ${backupDir}";
+    };
   };
 }

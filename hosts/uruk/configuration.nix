@@ -17,6 +17,7 @@
       _1password.enable = true;
     };
     services = {
+      backup.enable = true;
       paperless.enable = true;
     };
     shell = {
