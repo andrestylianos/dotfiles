@@ -76,10 +76,16 @@
     userEmail = "andre.stylianos@protonmail.com";
     extraConfig = {
       user = {
-        signingkey = "A6DDF756C510CB4E";
+        signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGFjyP6503WFbZZTyo96oFtwdTlZH7Dq/gFBEaiPXlA5";
       };
       commit = {
         gpgsign = true;
+      };
+      gpg = {
+        format = "ssh";
+        ssh = {
+          program = "${pkgs._1password-gui}/bin/op-ssh-sign";
+        };
       };
     };
   };

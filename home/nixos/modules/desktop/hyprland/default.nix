@@ -165,6 +165,8 @@ in {
 
          exec-once = systemctl --user start waybar
 
+         exec-once = ${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1 &
+
          misc {
            # enable Variable Frame Rate
            vfr = true
