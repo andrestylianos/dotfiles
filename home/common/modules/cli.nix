@@ -14,10 +14,13 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      difftastic
       exa
       fd
+      git-cliff
       ripgrep
       tldr
+      zoxide
     ];
 
     programs.fzf = {
@@ -27,9 +30,14 @@ in {
     programs.bat = {
       enable = true;
     };
-    programs.zsh.shellAliases = mkIf config.hostConfig.shell.zsh.enable {
-      ls = "exa";
-      cat = "bat";
+    programs.zsh = {
+      shellAliases = mkIf config.hostConfig.shell.zsh.enable {
+        ls = "exa";
+        cat = "bat";
+      };
+      initExtra = ''
+        eval "$(zoxide init zsh)"
+      '';
     };
   };
 }
