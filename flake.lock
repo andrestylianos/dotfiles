@@ -269,11 +269,11 @@
         "nvim-paredit": "nvim-paredit"
       },
       "locked": {
-        "lastModified": 1693171087,
-        "narHash": "sha256-roxq/nDgF2/j4Ow/zI6qCe7dy6h1VoZ2zMcd5AS9AOA=",
+        "lastModified": 1693217194,
+        "narHash": "sha256-FDzdsqtebhZHOLWC2133Os80QBYxfjNuDunsoRLWS08=",
         "owner": "andrestylianos",
         "repo": "neovim-flake",
-        "rev": "58152e2d3f34eea5e7628d0dffa439fac80bc4d8",
+        "rev": "badbe186385bd4921f882b6fe333be71af3e419a",
         "type": "github"
       },
       "original": {
