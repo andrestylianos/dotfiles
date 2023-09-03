@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v20
+        uses: cachix/install-nix-action@v22
 
       - name: Install Cachix
         uses: cachix/cachix-action@v12
@@ -38,10 +38,6 @@ jobs:
         run: |
           nix build -o /tmp/old_system .#nixosConfigurations.uruk.config.system.build.toplevel
 
-      - name: Build old home-manager
-        run: |
-          nix build -o /tmp/old_hm .#homeManagerConfigurations.andre.activationPackage
-
       - name: Update flake.nix
         run: |
           nix flake update
@@ -50,25 +46,11 @@ jobs:
         run: |
           nix build -o /tmp/new_system .#nixosConfigurations.uruk.config.system.build.toplevel
 
-      - name: Build new home-manager
-        run: |
-          nix build -o /tmp/new_hm .#homeManagerConfigurations.andre.activationPackage
-
       - name: Get NixOS diff
         id: get-pr-body
         run: |
           nix run github:NixOS/nixpkgs/nixos-unstable#nvd -- --color never diff /tmp/old_system /tmp/new_system > /tmp/pr-body.txt
           body=$(cat /tmp/pr-body.txt)
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
-          echo "body=${body}" >> $GITHUB_OUTPUT
-
-      - name: Get home-manager diff
-        id: get-pr-hm
-        run: |
-          nix run github:NixOS/nixpkgs/nixos-unstable#nvd -- --color never diff /tmp/old_hm /tmp/new_hm > /tmp/pr-hm.txt
-          body=$(cat /tmp/pr-hm.txt)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
@@ -82,12 +64,6 @@ jobs:
 
             ```bash
             ${{ steps.get-pr-body.outputs.body }}
-            ```
-
-            # Home Manager changes:
-
-            ```bash
-            ${{ steps.get-pr-hm.outputs.body }}
             ```
           commit-message: Update flake lock
           title: Update flake.nix
