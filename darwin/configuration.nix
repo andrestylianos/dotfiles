@@ -52,6 +52,7 @@ args @ {
       "gather"
       "iterm2"
       "logseq"
+      "obsidian"
       "wezterm"
     ];
     brews = [
