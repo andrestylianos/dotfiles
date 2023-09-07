@@ -18,16 +18,24 @@ in {
       enable = true;
       # autocd = true;
       dotDir = ".config/zsh";
-      enableAutosuggestions = true;
-      enableCompletion = true;
+      #enableAutosuggestions = true;
+      #enableCompletion = true;
       shellAliases = {
         ip = "ip --color=auto";
       };
 
-      initExtra = ''
-        bindkey '^ ' autosuggest-accept
-        autopair-init
-      '';
+      initExtra =
+        if pkgs.stdenv.isLinux
+        then ''
+          bindkey "''${key[Up]}" up-line-or-search
+        ''
+        else
+          ''
+          ''
+          + ''
+            bindkey '^ ' autosuggest-accept
+            autopair-init
+          '';
 
       plugins = with pkgs; [
         {
@@ -49,6 +57,15 @@ in {
             sha256 = "0zmq66dzasmr5pwribyh4kbkk23jxbpdw4rjxx0i7dx8jjp2lzl4";
           };
           file = "zsh-syntax-highlighting.zsh";
+        }
+        {
+          name = "zsh-autocomplete";
+          src = fetchFromGitHub {
+            owner = "marlonrichert";
+            repo = "zsh-autocomplete";
+            rev = "23.07.13";
+            sha256 = "0axhdjvhaw6qw0cdsjai98hhim31baiwgpb10da5ma7zix6b9mfh";
+          };
         }
         {
           name = "zsh-autopair";

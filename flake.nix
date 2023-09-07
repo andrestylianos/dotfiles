@@ -114,7 +114,7 @@
         };
         darwinConfigurations."DN2J7HMQ7T" = inputs.nix-darwin.lib.darwinSystem {
           modules = [
-            # ./hosts/whale-macbook/configuration.nix
+            ./hosts/whale-macbook/configuration.nix
             ./darwin
             ./common
             inputs.home-manager.darwinModules.home-manager
