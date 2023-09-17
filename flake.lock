@@ -265,15 +265,14 @@
         "neovim": "neovim",
         "nixd": "nixd",
         "nixpkgs": "nixpkgs_3",
-        "nvim-lsp-notify": "nvim-lsp-notify",
         "nvim-paredit": "nvim-paredit"
       },
       "locked": {
-        "lastModified": 1693324285,
-        "narHash": "sha256-DALWjV2hR/edJRm3dYzOA+1MvbDV5NgYpDPK2fx69Oc=",
+        "lastModified": 1694980431,
+        "narHash": "sha256-4E741t4+M4mHadTbDxgX3quLyK7mcYGMQb8XWLQ2fLM=",
         "owner": "andrestylianos",
         "repo": "neovim-flake",
-        "rev": "3ea074695593d65033115dad1f3482ede6364b8e",
+        "rev": "20fab7e26bcd367911093b7231ea0262328be36f",
         "type": "github"
       },
       "original": {
@@ -507,22 +506,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "NUR",
-        "type": "github"
-      }
-    },
-    "nvim-lsp-notify": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1679265614,
-        "narHash": "sha256-J6PRYS62r4edMO6UDZKrOv2x6RFox5k3pqvVqlnz6hs=",
-        "owner": "mrded",
-        "repo": "nvim-lsp-notify",
-        "rev": "9986955e0423f2f5cdb3bd4f824bc980697646a0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mrded",
-        "repo": "nvim-lsp-notify",
         "type": "github"
       }
     },
