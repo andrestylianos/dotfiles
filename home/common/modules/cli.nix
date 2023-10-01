@@ -18,6 +18,7 @@ in {
       exa
       fd
       git-cliff
+      procs
       ripgrep
       tldr
       zoxide
@@ -38,6 +39,11 @@ in {
       initExtra = ''
         eval "$(zoxide init zsh)"
       '';
+    };
+    programs.zellij = {
+      enable = true;
+      enableZshIntegration = config.hostConfig.shell.zsh.enable;
+      package = pkgs.unstable.zellij;
     };
   };
 }
